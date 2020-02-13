@@ -1,28 +1,24 @@
-import 'package:ex_books/screens/authenticate/resetpassword.dart';
+import 'package:ex_books/screens/authenticate/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:ex_books/screens/authenticate/register.dart';
 import 'package:ex_books/services/Auth.dart';
 import 'package:ex_books/shared/constants.dart';
 import 'package:ex_books/shared/loading.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
-class SignIn extends StatefulWidget {
-  
-  final Function toggleView;
-  SignIn({this.toggleView});
-  
+class ResetPassword extends StatefulWidget {
   @override
-  _SignInState createState() => _SignInState();
+  _ResetPasswordState createState() => _ResetPasswordState();
 }
 
-class _SignInState extends State<SignIn> {
-  
+class _ResetPasswordState extends State<ResetPassword> {
+ 
   final _formkey = GlobalKey<FormState>();
   final Authservices _auth = Authservices();
   String email='';
-  String password='';
   String error='';
   bool loading =false;
-  
+
   @override
   Widget build(BuildContext context) {
     return loading ? Loading():Scaffold(
@@ -35,7 +31,7 @@ class _SignInState extends State<SignIn> {
                   Image.asset(
                  'img/logo.png',
                   fit: BoxFit.contain,
-                  height: 42,
+                  height: 45,
               ),
               Container(
                   padding: const EdgeInsets.all(8.0), child: Text('EX Books',style: TextStyle(fontSize:25),))
@@ -44,6 +40,7 @@ class _SignInState extends State<SignIn> {
           ),
         elevation: 0.0,
 
+     
       ) ,
 
       body: Container(
@@ -60,11 +57,11 @@ class _SignInState extends State<SignIn> {
                   height: 200,
               ),
 
-              SizedBox(height: 20.0,),
+              SizedBox(height: 25.0,),
               TextFormField(
                 decoration: textInputDecoration.copyWith(hintText: 'Email'),
                 validator: (val) {
-                  if (val.isEmpty) {
+                  if (val.isEmpty||!val.contains('@')) {
                         return 'Please enter valid email';
                                   }
                         return null;
@@ -76,57 +73,59 @@ class _SignInState extends State<SignIn> {
                 },
               ),
               SizedBox(height: 20.0,),
-              TextFormField(
-                decoration: textInputDecoration.copyWith(hintText: 'Password'),
-                 validator: (val) => val.length < 6 ? 'enter an password more than 6 chars' : null ,
-                obscureText: true,
-                onChanged: (val){
-                  setState(() {
-                    password=val;
-                  });
-                },
-              ),
-           // SizedBox(height: 5.0,),
              
-            FlatButton(
-              textColor: Color.fromRGBO(240, 140, 44, 10),
-              onPressed: (){
-              Navigator.push(context,  MaterialPageRoute(builder: (context) => ResetPassword()));
-
-              }, 
-              child: Align(
-               alignment: Alignment.topLeft,
-               child: Text('Forget Your Password ?',style: TextStyle(color:Color.fromRGBO(240, 140, 44, 10)),)),
-               ), 
+           
+             
             RaisedButton(
                 color: Color.fromRGBO(23, 19, 17, 10),
-                child: Text('Sign in',
+                child: Text('Submit',
                 style:TextStyle(color:Colors.white,fontWeight: FontWeight.bold,fontSize: 18),
                 
                 ),
-                onPressed: () async{
-                  if(_formkey.currentState.validate()){
-                      setState(() => loading=true);
-                      dynamic result = await _auth.signInWithMailAndPassword(email, password);
-                      if(result==null){
-                        setState(() {
-                          error='Email Or Password is incorrect';
-                          loading=false;
-                          });
-                 }}
+                onPressed: () {
+                  _auth.sendPasswordResetEmail(email);  
+                  return Alert(
+          context: context,
+          title: 'ALert',
+          style: AlertStyle(
+            titleStyle:TextStyle(fontSize: 0),
+            animationType: AnimationType.fromTop,
+            animationDuration: Duration(milliseconds: 400),
+            isCloseButton: false,
+            isOverlayTapDismiss: false,
+          ),
+          content: Column(
+                children: <Widget>[
+                  
+                  Icon(Icons.warning,color: Color.fromRGBO(180, 10, 3, 2),size: 47,),
+                  SizedBox(height: 20.0),
+                  Text('A password reset Link has been sent to $email',style: TextStyle(fontSize:17),),
+                  SizedBox(height: 9.0),
+              ],
+              
+              ),
+            
+            buttons: [
+               DialogButton(
+                  child: Text(
+                          "Ok",
+                         style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                    onPressed: () {
+                      Navigator.push(context,  MaterialPageRoute(builder: (context) => SignIn()));
+                    },
+                       color: Color.fromRGBO(23, 19, 17, 10),
+                       width: 120,
+                        ),
+            ] 
+              ).show();
                 },
               ),
-              FlatButton.icon(
-              label: Text('Crate New Account',style: TextStyle(fontSize:20),),
-              textColor: Color.fromRGBO(240, 140, 44, 10),
-              icon: Icon(Icons.person_add),
-              onPressed: (){
-                 widget.toggleView();
-            },
-               ),
+              
+               
             
             
-            SizedBox(height: 3.0,),
+            SizedBox(height: 12.0,),
             Text(error,
             style: TextStyle(color: Colors.red,fontSize: 14.0),
             ),
@@ -134,6 +133,8 @@ class _SignInState extends State<SignIn> {
           ),
         ) ,
       ),
+    
+      
     );
   }
 }
