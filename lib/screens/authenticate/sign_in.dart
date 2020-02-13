@@ -25,15 +25,28 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return loading ? Loading():Scaffold(
-      backgroundColor: Color.fromRGBO(238,238,238,20),
+      backgroundColor: Colors.white,
       appBar:AppBar(
-        backgroundColor: Color.fromRGBO(205,141,0, 30),
-        title: Text('SignIn'),
+        backgroundColor: Color.fromRGBO(240, 140, 44, 10),
+         title: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                  Image.asset(
+                 'img/logo.png',
+                  fit: BoxFit.contain,
+                  height: 45,
+              ),
+              Container(
+                  padding: const EdgeInsets.all(8.0), child: Text('EX Books',))
+            ],
+
+          ),
         elevation: 0.0,
         actions: <Widget>[
           FlatButton.icon(
-            icon: Icon(Icons.person),
-            label: Text('Sign Up'),
+            icon: Icon(Icons.person,color: Color.fromRGBO(23, 19, 17, 10),),
+            label: Text('Sign Up',),
+            textColor: Colors.white,
             onPressed: (){
                  widget.toggleView();
             },
@@ -46,12 +59,25 @@ class _SignInState extends State<SignIn> {
         padding: EdgeInsets.symmetric(vertical: 20.0,horizontal: 50.0),
         child: Form(
           key: _formkey,
-          child: Column(
+          child:ListView(
+            scrollDirection: Axis.vertical,
             children: <Widget>[
+              SizedBox(height: 40.0,),
+              Image.asset(
+                 'img/logo.png',
+                  fit: BoxFit.contain,
+                  height: 200,
+              ),
+
               SizedBox(height: 20.0,),
               TextFormField(
                 decoration: textInputDecoration.copyWith(hintText: 'Email'),
-                validator: (val) => val.isEmpty? 'enter an email' : null ,
+                validator: (val) {
+                  if (val.isEmpty) {
+                        return 'Please enter valid email';
+                                  }
+                        return null;
+                                }, 
                 onChanged: (val){
                   setState(() {
                     email=val;
@@ -71,22 +97,24 @@ class _SignInState extends State<SignIn> {
               ),
             SizedBox(height: 20.0,),
             RaisedButton(
-              color: Color.fromRGBO(167,50,50, 20),
-              child: Text('Sign in',
-              style:TextStyle(color:Colors.white),
+                color: Color.fromRGBO(23, 19, 17, 10),
+                child: Text('Sign in',
+                style:TextStyle(color:Colors.white,fontWeight: FontWeight.bold),
+                
+                ),
+                onPressed: () async{
+                  if(_formkey.currentState.validate()){
+                      setState(() => loading=true);
+                      dynamic result = await _auth.signInWithMailAndPassword(email, password);
+                      if(result==null){
+                        setState(() {
+                          error='Email Or Password is incorrect';
+                          loading=false;
+                          });
+                 }}
+                },
               ),
-              onPressed: () async{
-                if(_formkey.currentState.validate()){
-                    setState(() => loading=true);
-                    dynamic result = await _auth.signInWithMailAndPassword(email, password);
-                    if(result==null){
-                      setState(() {
-                        error='could not sign in';
-                        loading=false;
-                        });
-               }}
-              },
-            ),
+            
             
             SizedBox(height: 12.0,),
             Text(error,

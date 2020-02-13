@@ -7,13 +7,14 @@ class DatabaseServices {
  DatabaseServices({this.uid});
 
   //  collection refrence
-  final CollectionReference brewCollection = Firestore.instance.collection('brews');
+  final CollectionReference userCOllection = Firestore.instance.collection('users');
 
-Future updateUserData(String sugars, String name, int strength)async{
-  return await brewCollection.document(uid).setData({
-    'sugars': sugars,
-    'name': name,
-    'strenght':strength,
+Future updateUserData(String firstname, String lastname, String phonenumber,String email)async{
+  return await userCOllection.document(uid).setData({
+    'firstname': firstname,
+    'lastname': lastname,
+    'phonenumber':phonenumber,
+    'email':email,
       }) ;
 }
 

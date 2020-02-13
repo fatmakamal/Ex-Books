@@ -38,14 +38,14 @@ Future SignOut() async{
 
 //---------- Register using email and password----------
 
-Future registerWithMailAndPassword(String email ,String password) async{
+Future registerWithMailAndPassword(String firstname,String lastname,String phonenumber,String email ,String password) async{
 
   try{
     AuthResult result = await _auth.createUserWithEmailAndPassword(email: email,password: password);
     FirebaseUser user = result.user;
 
     //create a new document for the user with uid
-    await DatabaseServices(uid: user.uid).updateUserData('0', 'new crew member', 100);
+    await DatabaseServices(uid: user.uid).updateUserData(firstname, lastname , phonenumber , email);
 
     return _userFromFirebaseUser(user);
   }catch(e){

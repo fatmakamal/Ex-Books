@@ -17,6 +17,7 @@ class Home extends StatelessWidget {
 
 
     return  Scaffold(
+        
         backgroundColor: Colors.brown[100],
         appBar:AppBar(
           backgroundColor: Colors.brown[400],
