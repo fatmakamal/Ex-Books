@@ -1,6 +1,5 @@
 import 'package:ex_books/screens/authenticate/sign_in.dart';
 import 'package:flutter/material.dart';
-import 'package:ex_books/screens/authenticate/register.dart';
 import 'package:ex_books/services/Auth.dart';
 import 'package:ex_books/shared/constants.dart';
 import 'package:ex_books/shared/loading.dart';
@@ -25,19 +24,14 @@ class _ResetPasswordState extends State<ResetPassword> {
       backgroundColor: Colors.white,
       appBar:AppBar(
         backgroundColor: Color.fromRGBO(240, 140, 44, 10),
-         title: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                  Image.asset(
-                 'img/logo.png',
-                  fit: BoxFit.contain,
-                  height: 45,
-              ),
-              Container(
-                  padding: const EdgeInsets.all(8.0), child: Text('EX Books',style: TextStyle(fontSize:25),))
-            ],
-
-          ),
+         title: 
+             
+                // padding: const EdgeInsets.all(8.0), 
+                 Text('Reset Password',
+                         style: TextStyle(fontSize:25),
+                         textAlign: TextAlign.center,),
+                         
+             
         elevation: 0.0,
 
      

@@ -1,6 +1,5 @@
 import 'package:ex_books/screens/authenticate/resetpassword.dart';
 import 'package:flutter/material.dart';
-import 'package:ex_books/screens/authenticate/register.dart';
 import 'package:ex_books/services/Auth.dart';
 import 'package:ex_books/shared/constants.dart';
 import 'package:ex_books/shared/loading.dart';
