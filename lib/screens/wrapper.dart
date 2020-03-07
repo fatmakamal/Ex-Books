@@ -1,4 +1,5 @@
 import 'package:ex_books/screens/authenticate/authenticate.dart';
+import 'package:ex_books/screens/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ex_books/models/user.dart';
@@ -14,6 +15,6 @@ class wrapper extends StatelessWidget {
     if(user==null)
        return Authenticate();
     else
-       return Home();
+       return Profile();
   }
 }

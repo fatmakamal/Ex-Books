@@ -1,5 +1,5 @@
 import 'package:ex_books/common/Repository.dart';
-import 'package:ex_books/models/Book.dart';
+import 'package:ex_books/models/book.dart';
 import 'package:ex_books/models/user.dart';
 import 'package:ex_books/services/Auth.dart';
 import 'package:ex_books/services/database.dart';

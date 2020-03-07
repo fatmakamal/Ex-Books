@@ -19,17 +19,17 @@ class MyApp extends StatelessWidget {
        child: MaterialApp(
       debugShowCheckedModeBanner: false,
        home: wrapper(),
-       routes:
+     /*  routes:
       {
         CategoryBooksScreen.routeName : (ctx) => CategoryBooksScreen(),
         BookDetailsScreen.routeName : (ctx) => BookDetailsScreen(),
         // UserProfile.routeName : (ctx) => UserProfile(),
       },
+*/
 
-
-      onUnknownRoute: (settings) {
+     /* onUnknownRoute: (settings) {
         return MaterialPageRoute(builder: (ctx) => Home());
-      },
+      },*/
       ),
     );
   }

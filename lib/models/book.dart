@@ -1,26 +1,38 @@
-import 'package:flutter/foundation.dart';
-
 class Book {
-  final String id;
-  final List<String> categories;
-  final String title;
-  final String authorName;
-  final String imageUrl;
-  final double price;
-  final String describtion;
+  String documentId;
+  String uid;
+  String bookName;
+  String authorName;
+  String bookImage;
+  String selectedCategory;
+  String describtion;
 
-  final String userName;
-  final String userImageUrl;
+  Book(
+      {this.documentId,
+      this.bookName,
+      this.authorName,
+      this.bookImage,
+      this.selectedCategory,
+      this.describtion,
+      this.uid});
 
-  const Book(
-      {@required this.id,
-        @required this.categories,
-        @required this.title,
-        @required this.authorName,
-        @required this.price,
-        @required this.imageUrl,
-        @required this.describtion,
-        @required this.userName,
-        @required this.userImageUrl,
-        });
+  Book.fromSnapshot(Map snapshot, String id)
+      : documentId = id,
+        authorName = snapshot['authorname'],
+        bookName = snapshot['bookname'],
+        bookImage = snapshot['image'] ?? '',
+        describtion = snapshot['decription'] ?? '',
+        selectedCategory = snapshot['category'] ?? '',
+        uid = snapshot['uid'];
+
+  toJson() {
+    return {
+      "authorName": authorName,
+      "bookName": bookName,
+      "bookImage": bookImage,
+      "describtion": describtion,
+      "selectedCategory": selectedCategory,
+      "uid": uid
+    };
+  }
 }

@@ -38,7 +38,7 @@ class Repository {
     return ref.document(id).updateData(data);
   }
 
-  Stream<List<Book>> getByQuery(uid){
+  /*Stream<List<Book>> getByQuery(uid){
     return  ref
         .where('uid', isEqualTo: uid)
         .getDocuments().asStream().map((Q)=>Q.documents).map((doc) => 
@@ -55,5 +55,5 @@ class Repository {
                    
                   );
            
-  }
+  }*/
 }
