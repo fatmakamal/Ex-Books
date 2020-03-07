@@ -1,8 +1,13 @@
+import 'dart:io';
+import 'package:path/path.dart';
+import 'package:ex_books/services/database.dart';
+import 'package:ex_books/services/upload_iamge.dart';
 import 'package:flutter/material.dart';
 import 'package:ex_books/services/Auth.dart';
 import 'package:ex_books/shared/constants.dart';
 import 'package:ex_books/shared/loading.dart';
 import 'package:flutter/services.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class Register extends StatefulWidget {
   
@@ -14,7 +19,8 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  
+  final UploadImage img = UploadImage();
+  final DatabaseServices _database = DatabaseServices();
   final _formkey = GlobalKey<FormState>();
   final Authservices _auth = Authservices();
   String firstName = '';
@@ -23,6 +29,7 @@ class _RegisterState extends State<Register> {
   String email='';
   String password='';
   String confirmedPassword = '';
+   File image;
   String error='';
   bool loading =false;
   
@@ -153,6 +160,115 @@ class _RegisterState extends State<Register> {
                   });
                 },
               ),
+            SizedBox(height:20.0),
+                  FlatButton(
+                    onPressed: null,
+                    child: Row(
+                      children:<Widget>[
+                         ClipOval(
+                            child: Material(
+                            color: Color.fromRGBO(23, 19, 17, 10), // button color
+                                child: InkWell(
+                                  splashColor:Color.fromRGBO(240, 140, 44, 10), // inkwell color
+                                  child: SizedBox(width: 40, height: 40, child: Icon(Icons.add,color: Colors.white,)),
+                                  onTap: () {
+          Alert(
+          context: context,
+          title: 'ALert',
+          style: AlertStyle(
+            titleStyle:TextStyle(fontSize: 0),
+            animationType: AnimationType.fromTop,
+            animationDuration: Duration(milliseconds: 400),
+          ),
+          content: Column(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                            FlatButton(
+                    onPressed: null,
+                    child: Row(
+                      children:<Widget>[
+                         ClipOval(
+                            child: Material(
+                            color: Color.fromRGBO(23, 19, 17, 10), // button color
+                                child: InkWell(
+                                  splashColor:Color.fromRGBO(240, 140, 44, 10), // inkwell color
+                                  child: SizedBox(width: 40, height: 40, child: Icon(Icons.add,color: Colors.white,)),
+                                  onTap: () async {
+                                   image = await UploadImage() .OpenGallery();
+                                             }
+                                         ),
+                                            ),
+                                 ),
+                                 SizedBox(width:15),
+                                 Text('Gallery',style: TextStyle(fontSize:17,fontWeight: FontWeight.bold,color: Color.fromRGBO(23, 19, 17, 10))), 
+  
+                                   ]
+                              ) ,
+                     ),
+                    ],
+                  ),
+                  SizedBox(height: 20.0),
+                 Row(
+                    children: <Widget>[
+                            FlatButton(
+                    onPressed: null,
+                    child: Row(
+                      children:<Widget>[
+                         ClipOval(
+                            child: Material(
+                            color: Color.fromRGBO(23, 19, 17, 10), // button color
+                                child: InkWell(
+                                  splashColor:Color.fromRGBO(240, 140, 44, 10), // inkwell color
+                                  child: SizedBox(width: 40, height: 40, child: Icon(Icons.camera,color: Colors.white,)),
+                                  onTap: () {
+                              UploadImage().OpenCamera();
+                                img.hello();
+                                image=img.getter();
+                             
+                              
+                                             }
+                                         ),
+                                            ),
+                                 ),
+                                 SizedBox(width:15),
+                                 Text('Camera',style: TextStyle(fontSize:17,fontWeight: FontWeight.bold,color: Color.fromRGBO(23, 19, 17, 10))), 
+  
+                                   ]
+                              ) ,
+                     ),
+                    ],
+                  ),
+              ],
+              
+              ),
+            
+            buttons: [
+               DialogButton(
+                  child: Text(
+                          "Ok",
+                         style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                    onPressed: () {
+                      print('imaage on paath $image');
+                      _database.uploadPic(image);
+
+                      Navigator.pop(context, true);
+                    },
+                       color: Color.fromRGBO(23, 19, 17, 10),
+                       width: 120,
+                        ),
+            ] 
+              ).show();
+              }),
+                  ),
+              ),
+                        SizedBox(width:15),
+                        Text('Upload image',style: TextStyle(fontSize:17,fontWeight: FontWeight.bold,color: Color.fromRGBO(23, 19, 17, 10))), 
+  
+                                   ]
+                              ) ,
+                     ),              
 
 
             SizedBox(height: 20.0,),
@@ -162,9 +278,11 @@ class _RegisterState extends State<Register> {
               style:TextStyle(color:Colors.white),
               ),
               onPressed: () async{
+                     
                if(_formkey.currentState.validate()){
                     setState(() => loading=true);
-                    dynamic result = await _auth.registerWithMailAndPassword(firstName,lastName,phoneNumber,email,password);
+                    dynamic result = await _auth.registerWithMailAndPassword(firstName,lastName,phoneNumber,basename(image.path),email,password);
+
                     if(result==null){
                       setState(() {
                         error='could not register';

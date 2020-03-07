@@ -2,13 +2,13 @@ class UserDetails {
 
   final String firstName;
   final String lastName;
-  final int phoneNumber;
+  final String phoneNumber;
   final String email;
-  final String password;
-  final String address;
   final String userID;
+  final String image;
+ 
 
-  UserDetails(this.firstName, this.lastName, this.phoneNumber, this.email, this.password, this.address, this.userID);
+  UserDetails(this.firstName, this.lastName, this.phoneNumber, this.email, this.userID,this.image);
 
 
 }

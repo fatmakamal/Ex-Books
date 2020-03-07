@@ -7,20 +7,23 @@ class Rate extends StatefulWidget {
 }
 
 class _RateState extends State<Rate> {
- 
-  double rating=0;
+  
+ static double rate=0;
   @override
   Widget build(BuildContext context) {
+   
+
     return Container(
       width: 100,
      child: SmoothStarRating(
           allowHalfRating: false,
           onRatingChanged: (v) {
-            rating = v;
+            rate = v;
             setState(() {});
+            print('the rate is $rate');
           },
           starCount: 5,
-          rating: rating,
+          rating: rate,
           size: 20,
           filledIconData: Icons.star,
           halfFilledIconData: Icons.blur_on,
@@ -32,3 +35,6 @@ class _RateState extends State<Rate> {
     );
   }
 }
+
+
+   
