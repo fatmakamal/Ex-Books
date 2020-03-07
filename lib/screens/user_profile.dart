@@ -1,4 +1,4 @@
-import 'package:ex_books/models/book.dart';
+import 'package:ex_books/models/Book.dart';
 import 'package:ex_books/screens/AddBookForm.dart';
 import 'package:ex_books/services/Auth.dart';
 import 'package:ex_books/services/database.dart';

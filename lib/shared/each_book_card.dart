@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:ex_books/models/book.dart';
+import 'package:ex_books/models/Book.dart';
 import 'package:ex_books/services/database.dart';
 import 'package:flutter/material.dart';
 
