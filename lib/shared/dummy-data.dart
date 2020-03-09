@@ -1,72 +1,60 @@
-// import 'package:ex_books/models/book.dart';
-// import 'package:ex_books/models/category.dart';
-// import 'package:flutter/foundation.dart';
-// import 'package:flutter/material.dart';
+import 'package:ex_books/models/book.dart';
+import 'package:ex_books/models/category.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 
-//  final DUMMY_CATEGORIES =  [
+ final DUMMY_CATEGORIES =  [
 
-//   Categoreey(
-//     id: 'c1',
-//     title: 'Magical',
-//     color: Colors.purple,
-//   ),
-//   Categoreey(
-//     id: 'c2',
-//     title: 'Classic',
-//     color: Colors.red,
-//   ),
-//   Categoreey(
-//     id: 'c3',
-//     title: 'Drama',
-//     color: Colors.orange,
-//   ),
-//   Categoreey(
-//     id: 'c4',
-//     title: 'Historical',
-//     color: Colors.amber,
-//   ),
-//   Categoreey(
-//     id: 'c5',
-//     title: 'Horror',
-//     color: Colors.blue,
-//   ),
-//   Categoreey(
-//     id: 'c6',
-//     title: 'Mystery',
-//     color: Colors.green,
-//   ),
-//   Categoreey(
-//     id: 'c7',
-//     title: 'Romance',
-//     color: Colors.red,
-//   ),
-//   Categoreey(
-//     id: 'c8',
-//     title: 'Short Story',
-//     color: Colors.lightGreen,
-//   ),
-//   Categoreey(
-//     id: 'c9',
-//     title: 'Sceience Fiction',
-//     color: Colors.pink,
-//   ),
-//   Categoreey(
-//     id: 'c10',
-//     title: 'Action And Adventure',
-//     color: Colors.teal,
-//   ),
-//   Categoreey(
-//     id: 'c11',
-//     title: 'Crime and Detective',
-//     color: Colors.amber,
-//   ),
-//   Categoreey(
-//     id: 'c12',
-//     title: 'Comic and Graphic',
-//     color: Colors.pink,
-//   ),
-// ];
+  Categoreey(
+    id: 'c1',
+    title: 'Magical',
+  ),
+  Categoreey(
+    id: 'c2',
+    title: 'Classic',
+  ),
+  Categoreey(
+    id: 'c3',
+    title: 'Drama',
+  ),
+  Categoreey(
+    id: 'c4',
+    title: 'Historical',
+  ),
+  Categoreey(
+    id: 'c5',
+    title: 'Horror',
+  ),
+  Categoreey(
+    id: 'c6',
+    title: 'Mystery',
+  ),
+  Categoreey(
+    id: 'c7',
+    title: 'Romance',
+  ),
+  Categoreey(
+    id: 'c8',
+    title: 'Short Story',
+  ),
+  Categoreey(
+    id: 'c9',
+    title: 'Sceience Fiction',
+  ),
+  Categoreey(
+    id: 'c10',
+    title: 'Action And Adventure',
+  ),
+  Categoreey(
+    id: 'c11',
+    title: 'Crime and Detective',
+  ),
+  Categoreey(
+    id: 'c12',
+    title: 'Comic and Graphic',
+  ),
+];
 
 // const DUMMY_BOOKS = const [
 //   Book(

@@ -6,11 +6,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart';
 
+import '../models/category.dart';
+
 class DatabaseServices {
   final String uid;
   final Repository _bookRepo = new Repository("books");
-
   DatabaseServices({this.uid});
+
+  //---------------------
+   //collection refrence w hwa refrence l collection mo3in fi ll database
+  final CollectionReference categoriesCollection = Firestore.instance.collection('categories');
 
   //----------------collection refrence------------------------------------
   final CollectionReference userCOllection =
@@ -100,4 +105,27 @@ class DatabaseServices {
     }
     return books;
   }
+
+
+  //-------------------------------------------------------------------------------------
+
+  //category list from snapshot function
+List<Categoreey> _categoryListFromSnapshot(QuerySnapshot snapshot)
+{
+  return snapshot.documents.map((doc){
+    return Categoreey(
+      id: doc.documentID,
+      title: doc.data['title'] ?? '',
+      );
+  }).toList();
+}
+//get categories stream 
+
+Stream<List<Categoreey>> get categories
+{
+  return categoriesCollection.snapshots()
+  .map(_categoryListFromSnapshot);
+}
+
+
 }
