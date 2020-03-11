@@ -64,7 +64,7 @@ class DatabaseServices {
   Stream<List<Book>> get books {
     return bookCOllection.snapshots().map(bookListFromSnapshot);
   }
-
+  
 //book list from snapshot
 
   List<Book> bookListFromSnapshot(QuerySnapshot snapshot) {
@@ -126,6 +126,31 @@ Stream<List<Categoreey>> get categories
   return categoriesCollection.snapshots()
   .map(_categoryListFromSnapshot);
 }
+
+  // getUserData(String userId)
+  // {
+  //   // var username ;
+
+  //   //     final docRef =  Firestore.instance.collection('users').document(userId).get()
+  //   //     .then((val){
+  //   //       username = val.data['firstname'];
+  //   //       print("this issssssssssssssssssss $username");
+  //   //       // return val.data['firstname']; 
+  //   //     });
+
+  //   //     return username;
+
+  //       return Firestore.instance.collection('users')
+  //       .where('uid', isEqualTo: userId).getDocuments();
+
+  // }
+
+  // getUserData(String UserId)
+  // {
+  //   return Firestore.instance.collection('users').document(UserId).get({
+  //     'firstname' 
+  //   });
+  // }
 
 
 }

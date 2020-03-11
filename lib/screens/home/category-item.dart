@@ -1,15 +1,25 @@
 
+import 'package:ex_books/screens/category-books-screen/category-books-screen.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../models/category.dart';
 
 class CategoryTile extends StatelessWidget {
   final Categoreey category;
   CategoryTile({this.category});
+
+  void selectCategory(BuildContext context)
+  {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => CategoryBooksScreen(category.title)));
+    
+  }
+
+  
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => null,
+      onTap: () => selectCategory(context),
       splashColor: Theme.of(context).primaryColor,
 //      borderRadius: BorderRadius.circular(15),
       child: Container(
