@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ex_books/common/Repository.dart';
 import 'package:ex_books/models/Book.dart';
+import 'package:ex_books/models/userDetails.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart';
@@ -33,7 +34,7 @@ class DatabaseServices {
 
 //--------------------------Add new Book-------------------------------------------
   Future updateBookData(String uid, String bookname, String authorname,
-      var image, String category, String description) async {
+      var image, String category, String description, String username,String userImage) async {
     return await bookCOllection.document().setData({
       'uid': uid,
       'bookname': bookname,
@@ -41,6 +42,8 @@ class DatabaseServices {
       'image': image,
       'category': category,
       'decription': description,
+      'username' : username,
+      'userimage' :userImage,
     });
   }
 
@@ -100,4 +103,31 @@ class DatabaseServices {
     }
     return books;
   }
+
+// ----------get user details-------------
+
+  // List<UserDetails> userDetailsFromSnapshot(DocumentSnapshot snapshot) {
+  //   return snapshot.((doc) {
+  //     return UserDetails(
+  //       firstName: doc.data['firstname'],
+  //       lastName: doc.data['lastname'],
+  //       image: doc.data['image'],
+  //       email: doc.data['email'],
+  //       phoneNumber: doc.data['phonenumber'],
+  //       userID: doc.data['uid'],
+  //     ) ;
+  //   }).toList();
+  // }
+
+ //------------------------------------------------------------------
+
+   Future getUser(String uid) async {
+    try {
+      var userData = await userCOllection.document(uid).get();
+      return UserDetails.fromData(userData.data);
+    } catch (e) {
+      return e.message;
+    }
+  } 
+
 }

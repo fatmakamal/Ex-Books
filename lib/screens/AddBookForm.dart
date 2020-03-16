@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:ex_books/models/userDetails.dart';
 import 'package:ex_books/services/Auth.dart';
 import 'package:ex_books/services/database.dart';
 import 'package:ex_books/services/upload_iamge.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ex_books/shared/constants.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -41,6 +43,20 @@ class _AddBookFormState extends State<AddBookForm> {
   TextEditingController _bookImageController = TextEditingController();
   TextEditingController _bookDescriptionController = TextEditingController();
 //----------------------------------------------------
+
+ UserDetails  currentUser = new UserDetails();
+
+_AddBookFormState (){
+  _populateCurrentUser();
+}
+
+  void _populateCurrentUser() async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    var _currentUser = await _database.getUser(user.uid);
+    setState(() {
+      currentUser = _currentUser;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -314,7 +330,10 @@ class _AddBookFormState extends State<AddBookForm> {
                           authorName,
                           basename(bookImage.path),
                           selectedCategory,
-                          describtion);
+                          describtion,
+                          currentUser.email,
+                          currentUser.image);
+                          print(currentUser.email);
                       if (result == null) {
                         setState(() {
                           error = 'could not submit';

@@ -15,7 +15,7 @@ Rate rate = Rate();
 
 Future getCurrentUser()async{
 FirebaseUser user = await _auth.currentUser();
-return user.uid;
+return user;
 //print("the user id is $uid");
 }
 
@@ -90,13 +90,13 @@ return _auth.sendPasswordResetEmail(email: email);
 
 
 //-----------Add new book---------------
-Future addNewBook(String bookname,String authorname,var image,String category ,String description) async{
+Future addNewBook(String bookname,String authorname,var image,String category ,String description,String username,String userImage) async{
 
   try{
     final FirebaseUser user = await _auth.currentUser();
     
     //create a new document for the user with uid
-    await DatabaseServices(uid: user.uid).updateBookData(user.uid,bookname, authorname , image , category ,description);
+    await DatabaseServices(uid: user.uid).updateBookData(user.uid,bookname, authorname , image , category ,description,username,userImage);
 
     return _userFromFirebaseUser(user);
   }catch(e){

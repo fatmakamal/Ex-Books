@@ -19,14 +19,20 @@ class _BookListState extends State<BookList> {
   DatabaseServices service = new DatabaseServices();
   List<Book> userBooks = new List<Book>();
 
-  @override
-  void initState() {
-    fillBookData();
-  }
+  // @override
+  // void initState() {
+  //   fillBookData();
+  // }
+  // _BookListState(){
+  //   fillBookData();
+  // }
 
   fillBookData() async {
     FirebaseUser cUser = await FirebaseAuth.instance.currentUser();
-    userBooks = await service.getBooks(cUser.uid);
+    List<Book> user = await service.getBooks(cUser.uid);
+    setState(() {
+      userBooks = user;
+    });
   }
 
   @override
@@ -41,6 +47,7 @@ class _BookListState extends State<BookList> {
     //           }
 
 //-------------send user_books list to the builder to show them in the user profile----------
+      fillBookData();
 
     return ListView.builder(
       scrollDirection: Axis.horizontal,

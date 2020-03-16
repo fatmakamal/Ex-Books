@@ -1,4 +1,6 @@
 import 'package:ex_books/screens/authenticate/authenticate.dart';
+import 'package:ex_books/screens/authenticate/register.dart';
+import 'package:ex_books/screens/authenticate/sign_in.dart';
 import 'package:ex_books/screens/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

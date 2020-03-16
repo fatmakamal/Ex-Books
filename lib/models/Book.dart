@@ -6,6 +6,8 @@ class Book {
   String bookImage;
   String selectedCategory;
   String describtion;
+  String userName ; 
+  String userImage ;
 
   Book(
       {this.documentId,
@@ -14,7 +16,9 @@ class Book {
       this.bookImage,
       this.selectedCategory,
       this.describtion,
-      this.uid});
+      this.uid,
+      this.userName,
+      this.userImage});
 
   Book.fromSnapshot(Map snapshot, String id)
       : documentId = id,
@@ -23,7 +27,9 @@ class Book {
         bookImage = snapshot['image'] ?? '',
         describtion = snapshot['decription'] ?? '',
         selectedCategory = snapshot['category'] ?? '',
-        uid = snapshot['uid'];
+        uid = snapshot['uid'],
+        userImage = snapshot['userimage'],
+        userName = snapshot['username'];
 
   toJson() {
     return {
@@ -32,7 +38,9 @@ class Book {
       "bookImage": bookImage,
       "describtion": describtion,
       "selectedCategory": selectedCategory,
-      "uid": uid
-    };
+      "uid": uid,
+      "userimage": userImage,
+      "userName": userName,
+          };
   }
 }
