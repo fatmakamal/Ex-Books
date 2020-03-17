@@ -23,7 +23,7 @@ class _ProfileState extends State<Profile> {
   String storagePath = '/data/user/0/com.example.ex_books/cache/';
   String total = "";
   String fullName = "";
-  String defultImage = "img/selena.jpg";
+  String defultImage = "img/defult.jpg";
 
   _ProfileState() {
     _populateCurrentUser();
@@ -63,12 +63,7 @@ class _ProfileState extends State<Profile> {
                   style: TextStyle(fontSize: 25),
                 ),
               ),
-              FlatButton(
-                child: Text('Log Out'),
-                onPressed: () async {
-                  _auth.SignOut();
-                },
-              ),
+
             ],
           ),
           elevation: 0.0,

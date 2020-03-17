@@ -1,11 +1,10 @@
 import 'package:ex_books/screens/authenticate/authenticate.dart';
-import 'package:ex_books/screens/authenticate/register.dart';
-import 'package:ex_books/screens/authenticate/sign_in.dart';
-import 'package:ex_books/screens/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ex_books/models/user.dart';
 import 'package:ex_books/screens/home/home.dart';
+
+import 'home/home.dart';
 //import 'auth/auth.dart';
 
 class wrapper extends StatelessWidget {
@@ -17,6 +16,6 @@ class wrapper extends StatelessWidget {
     if(user==null)
        return Authenticate();
     else
-       return Profile();
+       return Home();
   }
 }

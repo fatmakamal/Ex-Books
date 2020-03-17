@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 
 class Categoreey {
-  final String id;
-  final String title;
-  final Color color;
+  String id;
+  String title;
+  Color color;
 
-   Categoreey({
-    @required this.id,
-    @required this.title,
+  Categoreey({
+    this.id,
+    this.title,
     this.color = Colors.orange,
   });
+
+  Categoreey.fromSnapshot(Map snapshot, String id)
+      : id = id,
+        title = snapshot['title'];
+
+  toJson() {
+    return {
+      "title": title,
+    };
+  }
 }

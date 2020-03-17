@@ -1,13 +1,15 @@
 import 'dart:io';
 import 'package:ex_books/models/Book.dart';
+import 'package:ex_books/models/category.dart';
 import 'package:ex_books/services/database.dart';
 import 'package:flutter/material.dart';
 
 class EachBook extends StatelessWidget {
   final Book book;
-  final bookId;
+  final String bookId;
+  final List<Categoreey> categories;
 
-  const EachBook({this.book, this.bookId});
+  const EachBook({this.book,this.categories,this.bookId});
   Future deletebook(String docId) async{
     DatabaseServices service = new DatabaseServices();
     await service.deleteBook(docId);
@@ -62,7 +64,7 @@ class EachBook extends StatelessWidget {
                             ),
                             SizedBox(height: 5),
                             Text(
-                              book.selectedCategory,
+                              categories.firstWhere((cat) => cat.id == book.selectedCategory).title,
                               style: TextStyle(fontSize: 18),
                             ),
                             SizedBox(

@@ -1,5 +1,6 @@
 import 'package:ex_books/common/Repository.dart';
 import 'package:ex_books/models/Book.dart';
+import 'package:ex_books/models/category.dart';
 import 'package:ex_books/models/user.dart';
 import 'package:ex_books/services/Auth.dart';
 import 'package:ex_books/services/database.dart';
@@ -18,6 +19,7 @@ class _BookListState extends State<BookList> {
   
   DatabaseServices service = new DatabaseServices();
   List<Book> userBooks = new List<Book>();
+  List<Categoreey> categories = new List<Categoreey>();
 
   // @override
   // void initState() {
@@ -30,8 +32,10 @@ class _BookListState extends State<BookList> {
   fillBookData() async {
     FirebaseUser cUser = await FirebaseAuth.instance.currentUser();
     List<Book> user = await service.getBooks(cUser.uid);
+    List<Categoreey> cat = await service.getCategories();
     setState(() {
       userBooks = user;
+      categories = cat;
     });
   }
 
@@ -52,7 +56,7 @@ class _BookListState extends State<BookList> {
     return ListView.builder(
       scrollDirection: Axis.horizontal,
       itemBuilder: (context, index) => EachBook(
-        book: userBooks[index],
+        book: userBooks[index],categories: categories
       ),
       itemCount: userBooks.length,
     );

@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:ex_books/common/Repository.dart';
+import 'package:ex_books/models/category.dart';
 import 'package:ex_books/models/userDetails.dart';
 import 'package:ex_books/services/Auth.dart';
 import 'package:ex_books/services/database.dart';
@@ -22,17 +24,12 @@ class _AddBookFormState extends State<AddBookForm> {
   final DatabaseServices _database = DatabaseServices();
   final Authservices _auth = Authservices();
   final _formkey = GlobalKey<FormState>();
-  List<String> categories = [
-    'Action',
-    'Romance',
-    'Drama',
-    'Science',
-    'Education'
-  ];
+  List<Categoreey> categories = [];
   String bookName = '';
   String authorName = '';
   File bookImage;
-  String selectedCategory = 'Select Category';
+  String selectedCategory = '';
+  String catSelected = "Select Category";
   String describtion = '';
   bool loading = false;
   String error = '';
@@ -44,11 +41,16 @@ class _AddBookFormState extends State<AddBookForm> {
   TextEditingController _bookDescriptionController = TextEditingController();
 //----------------------------------------------------
 
- UserDetails  currentUser = new UserDetails();
+  UserDetails currentUser = new UserDetails();
 
-_AddBookFormState (){
-  _populateCurrentUser();
-}
+  _AddBookFormState() {
+    _populateCurrentUser();
+    _getCategory();
+  }
+
+  _getCategory() async {
+    categories = await _database.getCategories();
+  }
 
   void _populateCurrentUser() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
@@ -156,19 +158,27 @@ _AddBookFormState (){
                   height: 20.0,
                 ),
                 DropdownButtonFormField(
-                    validator: (String val) {
+                    validator: (val) {
                       if (val?.isEmpty ?? true) {
                         return 'Choose a category';
                       }
+                      return null;
                     },
-                    hint: Text('$selectedCategory'),
+                    hint: Text(catSelected),
                     items: categories.map((cat) {
                       return DropdownMenuItem(
-                        value: cat,
-                        child: Text('$cat '),
+                        // key: cat.id,
+                        value: cat.id,
+                        child: Text(cat.title),
                       );
                     }).toList(),
-                    onChanged: (val) => setState(() => selectedCategory = val)),
+                    onChanged: (val) {
+                      print(val);
+                      setState(() {
+                        selectedCategory = val;
+                        catSelected = categories.firstWhere((cat) => cat.id == selectedCategory).title;
+                      });
+                    }),
                 SizedBox(
                   height: 20.0,
                 ),
@@ -333,7 +343,7 @@ _AddBookFormState (){
                           describtion,
                           currentUser.email,
                           currentUser.image);
-                          print(currentUser.email);
+                      print(currentUser.email);
                       if (result == null) {
                         setState(() {
                           error = 'could not submit';

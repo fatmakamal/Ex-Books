@@ -7,11 +7,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart';
 
+import '../models/category.dart';
+
 class DatabaseServices {
   final String uid;
+  final Repository _categoryRepo = new Repository("categories");
   final Repository _bookRepo = new Repository("books");
-
   DatabaseServices({this.uid});
+
+  //---------------------
+  //collection refrence w hwa refrence l collection mo3in fi ll database
+  final CollectionReference categoriesCollection =
+      Firestore.instance.collection('categories');
 
   //----------------collection refrence------------------------------------
   final CollectionReference userCOllection =
@@ -33,8 +40,15 @@ class DatabaseServices {
   }
 
 //--------------------------Add new Book-------------------------------------------
-  Future updateBookData(String uid, String bookname, String authorname,
-      var image, String category, String description, String username,String userImage) async {
+  Future updateBookData(
+      String uid,
+      String bookname,
+      String authorname,
+      var image,
+      String category,
+      String description,
+      String username,
+      String userImage) async {
     return await bookCOllection.document().setData({
       'uid': uid,
       'bookname': bookname,
@@ -42,8 +56,8 @@ class DatabaseServices {
       'image': image,
       'category': category,
       'decription': description,
-      'username' : username,
-      'userimage' :userImage,
+      'username': username,
+      'userimage': userImage,
     });
   }
 
@@ -78,10 +92,10 @@ class DatabaseServices {
     }).toList();
   }
 
-  Future deleteBook(docId) async{
+  Future deleteBook(docId) async {
     // bookCOllection.document(docId).delete();
-      await _bookRepo.removeDocument(docId);
-      return;
+    await _bookRepo.removeDocument(docId);
+    return;
   }
 
   Future<List<Book>> getBooks(uId) async {
@@ -119,15 +133,65 @@ class DatabaseServices {
   //   }).toList();
   // }
 
- //------------------------------------------------------------------
+  //------------------------------------------------------------------
 
-   Future getUser(String uid) async {
+  Future getUser(String uid) async {
     try {
       var userData = await userCOllection.document(uid).get();
       return UserDetails.fromData(userData.data);
     } catch (e) {
       return e.message;
     }
-  } 
+  }
+
+  //-----------------------Get category List--------------------------------------------------------------
+
+  Future<List<Categoreey>> getCategories() async {
+    return _categoryRepo.getDataCollection().then((doc) {
+      return doc.documents
+          .map((b) => Categoreey.fromSnapshot(b.data, b.documentID))
+          .toList();
+    });
+  }
+
+  //category list from snapshot function
+  List<Categoreey> _categoryListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.documents.map((doc) {
+      return Categoreey(
+        id: doc.documentID,
+        title: doc.data['title'] ?? '',
+      );
+    }).toList();
+  }
+//get categories stream
+
+  Stream<List<Categoreey>> get categories {
+    return categoriesCollection.snapshots().map(_categoryListFromSnapshot);
+  }
+
+  // getUserData(String userId)
+  // {
+  //   // var username ;
+
+  //   //     final docRef =  Firestore.instance.collection('users').document(userId).get()
+  //   //     .then((val){
+  //   //       username = val.data['firstname'];
+  //   //       print("this issssssssssssssssssss $username");
+  //   //       // return val.data['firstname'];
+  //   //     });
+
+  //   //     return username;
+
+  //       return Firestore.instance.collection('users')
+  //       .where('uid', isEqualTo: userId).getDocuments();
+
+  // }
+
+  // getUserData(String UserId)
+  // {
+  //   return Firestore.instance.collection('users').document(UserId).get({
+  //     'firstname'
+  //   });
+  // }
 
 }
