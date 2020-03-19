@@ -1,6 +1,5 @@
 
 import 'package:ex_books/models/Book.dart';
-import 'package:ex_books/screens/category-books-screen/book-item.dart';
 import 'package:ex_books/screens/category-books-screen/books-list.dart';
 import 'package:ex_books/services/database.dart';
 import 'package:flutter/material.dart';
@@ -8,16 +7,18 @@ import 'package:provider/provider.dart';
 
 class CategoryBooksScreen extends StatefulWidget {
   final String theTitleOfSelectedCategory ;
-  CategoryBooksScreen(this.theTitleOfSelectedCategory);
+    final String theIdOfSelectedCategory ;
+
+
+  CategoryBooksScreen({this.theTitleOfSelectedCategory, this.theIdOfSelectedCategory});
   @override
-  _CategoryBooksScreenState createState() => _CategoryBooksScreenState(theTitleOfSelectedCategory);
+  _CategoryBooksScreenState createState() => _CategoryBooksScreenState();
 }
 
 class _CategoryBooksScreenState extends State<CategoryBooksScreen> {
 
-//--constractor ----
-  final String theTitleOfSelectedCategory ;
-  _CategoryBooksScreenState(this.theTitleOfSelectedCategory);
+
+
 
   // print(theTitleOfSelectedCategory);
   
@@ -27,8 +28,8 @@ class _CategoryBooksScreenState extends State<CategoryBooksScreen> {
 
     return StreamProvider<List<Book>>.value(
       value : DatabaseServices().books,
-          child: Scaffold(appBar: AppBar(title: Text(theTitleOfSelectedCategory),),
-      body: BooksList(theTitleOfSelectedCategory),
+          child: Scaffold(appBar: AppBar(title: Text(widget.theTitleOfSelectedCategory),),
+      body: BooksList(widget.theIdOfSelectedCategory),
       ),
     );
 

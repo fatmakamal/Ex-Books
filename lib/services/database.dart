@@ -3,16 +3,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ex_books/common/Repository.dart';
 import 'package:ex_books/models/Book.dart';
 import 'package:ex_books/models/userDetails.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart';
 
 import '../models/category.dart';
+import '../models/user.dart';
 
 class DatabaseServices {
   final String uid;
   final Repository _categoryRepo = new Repository("categories");
   final Repository _bookRepo = new Repository("books");
+  final Repository _userRepo = new Repository("users");
   DatabaseServices({this.uid});
 
   //---------------------
@@ -150,6 +151,16 @@ class DatabaseServices {
     return _categoryRepo.getDataCollection().then((doc) {
       return doc.documents
           .map((b) => Categoreey.fromSnapshot(b.data, b.documentID))
+          .toList();
+    });
+  }
+
+  //-----------------------Get users List--------------------------------------------------------------
+
+  Future<List<User>> getUsers() async {
+    return _userRepo.getDataCollection().then((doc) {
+      return doc.documents
+          .map((b) => User.fromSnapshot(b.data))
           .toList();
     });
   }

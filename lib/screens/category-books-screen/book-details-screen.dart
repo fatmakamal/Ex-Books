@@ -7,8 +7,10 @@ import 'package:flutter/material.dart';
 class BookDetailsScreen extends StatelessWidget {
 
   final Book book;
+  final String userFullName;
+  final String userImg ;
 
-    BookDetailsScreen({this.book});
+    BookDetailsScreen({this.book,this.userFullName,this.userImg});
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +46,13 @@ class BookDetailsScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(50),
                           color: Colors.black,
                         ),
-                        child: Icon(Icons.person,size: 40,color: Colors.white,)
+                        child:
+                         CircleAvatar(
+                            backgroundImage: AssetImage(
+                              // 'img/selena.jpg'
+                              '$userImg' ,
+                              ),
+                              ),
 //                        Image.network(
 //                          selectedBook.userImageUrl,
 //                          fit: BoxFit.cover,
@@ -53,7 +61,7 @@ class BookDetailsScreen extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.all(10),
                         child: Text(
-                          book.uid,
+                          userFullName,
                           style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,

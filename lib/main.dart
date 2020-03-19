@@ -1,3 +1,4 @@
+import 'package:ex_books/screens/home/splash-screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ex_books/models/user.dart';
@@ -14,7 +15,8 @@ class MyApp extends StatelessWidget {
        value: Authservices().user,  
        child: MaterialApp(
       debugShowCheckedModeBanner: false,
-       home: wrapper(),
+       home: SplashScreen(),
+      //  wrapper(),
      /*  routes:
       {
         CategoryBooksScreen.routeName : (ctx) => CategoryBooksScreen(),

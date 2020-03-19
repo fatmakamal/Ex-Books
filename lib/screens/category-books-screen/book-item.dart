@@ -1,19 +1,21 @@
 import 'package:ex_books/models/Book.dart';
 import 'package:ex_books/screens/category-books-screen/book-details-screen.dart';
-import 'package:ex_books/services/database.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../../models/user.dart';
 
 class BookItem extends StatelessWidget {
 
   final Book book;
-  BookItem({this.book});
+  final List<User> users;
+  BookItem({this.book,this.users});
 
   // var username;
 
-  void selectBook(ctx)
+  void selectBook(ctx, String userFullName , String defaultImg)
   {
-    Navigator.push(ctx, MaterialPageRoute(builder: (ctx)=> BookDetailsScreen(book: book)));
+    Navigator.push(ctx, MaterialPageRoute(builder: (ctx)
+    => BookDetailsScreen(book: book, userFullName: userFullName, userImg : defaultImg)));
         // var username = DatabaseServices().getUserData(book.uid);
 
     
@@ -42,8 +44,23 @@ class BookItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final userFirstName = users.firstWhere((user) => user.uid == book.uid).firstname;
+    final userLastName = users.firstWhere((user) => user.uid == book.uid).lastname;
+    final userFullName = "$userFirstName $userLastName" ; 
+    final userImage = users.firstWhere((user) => user.uid == book.uid).image;
+
+    String path = '/data/user/0/com.example.ex_books/cache/';
+    String totalImagePath = path + userImage;
+      String defultImage = "img/defult.jpg";
+
+      String getImage(){
+    return totalImagePath == "" ? defultImage : totalImagePath;
+  }
+
+
     return InkWell(
-      onTap: () => selectBook(context),
+      onTap: () => selectBook(context,userFullName,defultImage),
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         elevation: 4,
@@ -86,13 +103,17 @@ class BookItem extends StatelessWidget {
                             borderRadius: BorderRadius.circular(50),
                             color: Colors.white,
                           ),
-                          child: Icon(Icons.person,size: 50,)
+                          child: CircleAvatar(
+                            backgroundImage: AssetImage(
+                              // 'img/selena.jpg'
+                              '$defultImage' ,
+                              ),
+                              ),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(10),
                           child: Text(
-                            // username,
-                            book.uid,
+                            userFullName,
                             style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,

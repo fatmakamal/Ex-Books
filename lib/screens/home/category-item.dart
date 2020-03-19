@@ -2,6 +2,7 @@
 import 'package:ex_books/screens/category-books-screen/category-books-screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ex_books/screens/home/splash-screen.dart';
 
 import '../../models/category.dart';
 
@@ -11,7 +12,10 @@ class CategoryTile extends StatelessWidget {
 
   void selectCategory(BuildContext context)
   {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => CategoryBooksScreen(category.title)));
+    // Navigator.push(context, MaterialPageRoute(builder: (context)=> SplashScreen(category: category,)));
+    Navigator.push(context, MaterialPageRoute(builder: (context)
+     =>
+      CategoryBooksScreen(theIdOfSelectedCategory: category.id, theTitleOfSelectedCategory: category.title,)));
     
   }
 
