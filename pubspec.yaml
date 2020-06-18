@@ -33,6 +33,8 @@ dependencies:
   smooth_star_rating: 1.0.4+2
   image_picker:
   firebase_storage:
+  carousel_pro:
+
     
 
 

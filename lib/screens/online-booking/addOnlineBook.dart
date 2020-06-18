@@ -1,27 +1,25 @@
 import 'dart:io';
 import 'package:ex_books/models/category.dart';
-import 'package:ex_books/models/userDetails.dart';
 import 'package:ex_books/services/Auth.dart';
 import 'package:ex_books/services/database.dart';
 import 'package:ex_books/services/upload_iamge.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ex_books/shared/constants.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:path/path.dart';
 
-class AddBookForm extends StatefulWidget {
+class AddOnlineBookForm extends StatefulWidget {
   FileImage get bookImage => null;
 
   @override
-  _AddBookFormState createState() => _AddBookFormState();
+  _AddOnlineBookFormState createState() => _AddOnlineBookFormState();
 }
 
-class _AddBookFormState extends State<AddBookForm> {
+class _AddOnlineBookFormState extends State<AddOnlineBookForm> {
   final UploadImage img = UploadImage();
   final DatabaseServices _database = DatabaseServices();
   final Authservices _auth = Authservices();
-  final _formkey = GlobalKey<FormState>();
+  final _key = GlobalKey<FormState>();
   List<Categoreey> categories = [];
   String bookName = '';
   String authorName = '';
@@ -29,6 +27,8 @@ class _AddBookFormState extends State<AddBookForm> {
   String selectedCategory = '';
   String catSelected = "Select Category";
   String describtion = '';
+  int price = 0;
+  int quantity = 0 ;
   bool loading = false;
   String error = '';
 
@@ -37,26 +37,20 @@ class _AddBookFormState extends State<AddBookForm> {
   TextEditingController _authorNameController = TextEditingController();
   TextEditingController _bookImageController = TextEditingController();
   TextEditingController _bookDescriptionController = TextEditingController();
+  TextEditingController _priceController = TextEditingController();
+  TextEditingController _quantityController = TextEditingController();
 //----------------------------------------------------
 
-  UserDetails currentUser = new UserDetails();
 
-  _AddBookFormState() {
-    _populateCurrentUser();
-    _getCategory();
-  }
+_AddOnlineBookFormState(){
+  _getCategory();
+}
 
   _getCategory() async {
     categories = await _database.getCategories();
   }
 
-  void _populateCurrentUser() async {
-    FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    var _currentUser = await _database.getUser(user.uid);
-    setState(() {
-      currentUser = _currentUser;
-    });
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -85,18 +79,10 @@ class _AddBookFormState extends State<AddBookForm> {
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
           child: Form(
-            key: _formkey,
+            key: _key,
             child: ListView(
               scrollDirection: Axis.vertical,
               children: <Widget>[
-                Center(
-                  child: Text("Add New Book",
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black)),
-                ),
-                SizedBox(height: 20),
                 TextFormField(
                   controller: _bookNameController,
                   decoration: textInputDecoration.copyWith(
@@ -114,7 +100,7 @@ class _AddBookFormState extends State<AddBookForm> {
                   },
                 ),
                 SizedBox(
-                  height: 20.0,
+                  height: 18.0,
                 ),
                 TextFormField(
                   controller: _authorNameController,
@@ -133,7 +119,7 @@ class _AddBookFormState extends State<AddBookForm> {
                   },
                 ),
                 SizedBox(
-                  height: 20.0,
+                  height: 18.0,
                 ),
                 TextFormField(
                   controller: _bookDescriptionController,
@@ -152,9 +138,7 @@ class _AddBookFormState extends State<AddBookForm> {
                     });
                   },
                 ),
-                SizedBox(
-                  height: 20.0,
-                ),
+
                 DropdownButtonFormField(
                     validator: (val) {
                       if (val?.isEmpty ?? true) {
@@ -178,8 +162,43 @@ class _AddBookFormState extends State<AddBookForm> {
                       });
                     }),
                 SizedBox(
-                  height: 20.0,
+                  height: 18.0,
                 ),
+                TextFormField(
+                  controller: _priceController,
+                  decoration: textInputDecoration.copyWith(
+                      hintText: 'Price', prefixIcon: Icon(Icons.pages)),
+                  validator: (val) {
+                    if (val.isEmpty) {
+                      return 'Enter the Price';
+                    }
+                    return null;
+                  },
+                  onChanged: (val) {
+                    setState(() {
+                      price = int.parse(val);
+                    });
+                  },
+                ),
+                SizedBox(height: 18,),
+              
+                TextFormField(
+                  controller: _quantityController,
+                  decoration: textInputDecoration.copyWith(
+                      hintText: 'Quantity', prefixIcon: Icon(Icons.multiline_chart)),
+                  validator: (val) {
+                    if (val.isEmpty) {
+                      return 'Enter the Quantity';
+                    }
+                    return null;
+                  },
+                  onChanged: (val) {
+                    setState(() {
+                      quantity = int.parse(val);
+                    });
+                  },
+                ),
+                SizedBox(height: 18,),
                 FlatButton(
                   onPressed: null,
                   child: Row(children: <Widget>[
@@ -322,7 +341,7 @@ class _AddBookFormState extends State<AddBookForm> {
                   ]),
                 ),
                 SizedBox(
-                  height: 20.0,
+                  height: 14.0,
                 ),
                 RaisedButton(
                   color: Color.fromRGBO(23, 19, 17, 10),
@@ -331,17 +350,17 @@ class _AddBookFormState extends State<AddBookForm> {
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () async {
-                    if (_formkey.currentState.validate()) {
+                    if (_key.currentState.validate()) {
                       setState(() => loading = true);
-                      dynamic result = await _auth.addNewBook(
+                      dynamic result = await _auth.addNewOnlineBook(
                           bookName,
                           authorName,
                           basename(bookImage.path),
                           selectedCategory,
                           describtion,
-                          currentUser.email,
-                          currentUser.image);
-                     
+                          price,
+                          quantity);
+                      
                       if (result == null) {
                         setState(() {
                           error = 'could not submit';
@@ -384,6 +403,8 @@ class _AddBookFormState extends State<AddBookForm> {
                                   _bookImageController.clear();
                                   _bookDescriptionController.clear();
                                   _authorNameController.clear();
+                                  _priceController.clear();
+                                  _quantityController.clear();
                                   setState(() {
                                     selectedCategory = '';
                                     bookImage = null;

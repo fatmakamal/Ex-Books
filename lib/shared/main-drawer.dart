@@ -1,3 +1,6 @@
+//import 'package:ex_books/screens/online-booking/AddOnlinebook.dart';
+import 'package:ex_books/screens/online-booking/Online-home.dart';
+import 'package:ex_books/screens/online-booking/addOnlineBook.dart';
 import 'package:ex_books/services/Auth.dart';
 
 import 'package:flutter/material.dart';
@@ -61,6 +64,30 @@ class MainDrawer extends StatelessWidget {
                       Navigator.push(context,  MaterialPageRoute(builder: (context) => Profile()));
                     },
           ),
+      
+        //-----Online ListTile ---------------------
+          ListTile(
+            leading: Icon(
+              Icons.person,
+              size: 24,
+            ),
+            title: Text('Online Store' , style: TextStyle(fontWeight: FontWeight.bold,fontSize: 24,color: Colors.amber) ,),
+            onTap: (){
+                      Navigator.push(context,  MaterialPageRoute(builder: (context) => OnlineHome()));
+                    },
+          ),
+          //----------------------------
+        //-----Online ListTile ---------------------
+          ListTile(
+            leading: Icon(
+              Icons.person,
+              size: 24,
+            ),
+            title: Text('Add book' , style: TextStyle(fontWeight: FontWeight.bold,fontSize: 24,color: Colors.amber) ,),
+            onTap: (){
+                      Navigator.push(context,  MaterialPageRoute(builder: (context) => AddOnlineBookForm()));
+                    },
+          ),
           //----------------------------
 
           //---- Chats ListTile ---------------------
@@ -74,10 +101,17 @@ class MainDrawer extends StatelessWidget {
           ),
           //----------------------------
 
-          SizedBox(
-            height: 220,
+          //-----contact us ListTile ---------------------
+          ListTile(
+            leading: Icon(
+              Icons.call,
+              size: 24,
+            ),
+            title: Text('Contact Us' , style: TextStyle(fontWeight: FontWeight.bold,fontSize: 24,color: Colors.amber) ,),
+            onTap: ()=> null,
           ),
-
+          //----------------------------
+          
           //-----logout ListTile ---------------------
           ListTile(
             leading: Icon(
@@ -88,17 +122,6 @@ class MainDrawer extends StatelessWidget {
             onTap: () async{
                 await _auth.SignOut();
               },
-          ),
-          //----------------------------
-
-          //-----contact us ListTile ---------------------
-          ListTile(
-            leading: Icon(
-              Icons.call,
-              size: 24,
-            ),
-            title: Text('Contact Us' , style: TextStyle(fontWeight: FontWeight.bold,fontSize: 24,color: Colors.amber) ,),
-            onTap: ()=> null,
           ),
           //----------------------------
         ],

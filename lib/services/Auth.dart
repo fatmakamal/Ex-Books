@@ -104,5 +104,53 @@ Future addNewBook(String bookname,String authorname,var image,String category ,S
     return null;
   }
   }
+
+//-----------Add new online book---------------
+Future addNewOnlineBook(String bookname,String authorname,var image,String category ,String description,var price,int quantity) async{
+
+  try{
+    final FirebaseUser user = await _auth.currentUser();
+    
+    
+    await DatabaseServices(uid: user.uid).updateOnlineBookData(bookname, authorname , image , category ,description,price,quantity);
+
+    return _userFromFirebaseUser(user);
+  }catch(e){
+    print(e.toString());
+    return null;
+  }
+  }  
+
+//-----------Add to cart---------------
+Future addToCart(String bookname,var image ,var price,int quantity) async{
+
+  try{
+    final FirebaseUser user = await _auth.currentUser();
+    
+    await DatabaseServices(uid: user.uid).addToCart(bookname , image ,price,quantity,user.uid);
+
+    return _userFromFirebaseUser(user);
+  }catch(e){
+    print(e.toString());
+    return null;
+  }
+  } 
+
+  //-----------Add order---------------
+Future addOrder(String address,String phone ,int totalPay) async{
+
+  try{
+    final FirebaseUser user = await _auth.currentUser();
+    
+    await DatabaseServices(uid: user.uid).addNewOrder(address , phone , totalPay, user.uid);
+
+    return _userFromFirebaseUser(user);
+  }catch(e){
+    print(e.toString());
+    return null;
+  }
+  } 
+
+
   
 }
