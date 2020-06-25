@@ -22,28 +22,12 @@ class Home extends StatelessWidget {
             title: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-              Container(
-                  padding: const EdgeInsets.all(8.0), child: Text('EX Books',style: TextStyle(fontSize:25),)),
-             
-              Container(
-                margin: EdgeInsets.only(left: 90),
-                 padding: EdgeInsets.all(5),
-                 width: 58,
-                 child: InkWell(
-                    onTap: (){
-                      Navigator.push(context,  MaterialPageRoute(builder: (context) => Profile()));
-                    },
-                    child: CircleAvatar(
-                    radius: 20,
-                    backgroundImage: AssetImage('img/profile.jpg',),
-                    backgroundColor: Colors.black38,
-                     ),
-                 ),
+              Center(
+                child: Container(
+                    padding: const EdgeInsets.all(80.0), child: Text('EX Books',style: TextStyle(fontSize:25),)),
               ),
-              IconButton(
-            icon: Icon(Icons.notifications,size: 28,),
-            onPressed: ()=> null,
-          )
+             
+
               ],
 
           ),

@@ -28,15 +28,13 @@ class _OnlineHomeState extends State<OnlineHome> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                 Container(
-                    padding: const EdgeInsets.all(8.0), child: Text('EX Books',style: TextStyle(fontSize:25),)),
+                    padding: const EdgeInsets.all(80.0), child: Text('EX Books',style: TextStyle(fontSize:25),)),
 
                 ],
 
             ),
                     actions: <Widget>[
-            new IconButton(
-              icon: Icon(Icons.search),
-              onPressed: (){},),
+
             new IconButton(
               icon: Icon(Icons.shopping_cart),
               onPressed: (){

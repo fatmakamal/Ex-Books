@@ -92,9 +92,8 @@ class _ProfileState extends State<Profile> {
                             fontWeight: FontWeight.bold,
                             color: Colors.black)),
                   ]),
-              Rate(),
               SizedBox(
-                height: 10,
+                height: 15,
               ),
             ]),
             Container(

@@ -6,6 +6,7 @@ import 'package:ex_books/services/Auth.dart';
 import 'package:flutter/material.dart';
 
 import '../screens/user_profile.dart';
+import 'animated_popUp.dart';
 class MainDrawer extends StatelessWidget {
   @override
     final Authservices _auth =Authservices();
@@ -68,24 +69,12 @@ class MainDrawer extends StatelessWidget {
         //-----Online ListTile ---------------------
           ListTile(
             leading: Icon(
-              Icons.person,
+              Icons.shopping_basket,
               size: 24,
             ),
             title: Text('Online Store' , style: TextStyle(fontWeight: FontWeight.bold,fontSize: 24,color: Colors.amber) ,),
             onTap: (){
                       Navigator.push(context,  MaterialPageRoute(builder: (context) => OnlineHome()));
-                    },
-          ),
-          //----------------------------
-        //-----Online ListTile ---------------------
-          ListTile(
-            leading: Icon(
-              Icons.person,
-              size: 24,
-            ),
-            title: Text('Add book' , style: TextStyle(fontWeight: FontWeight.bold,fontSize: 24,color: Colors.amber) ,),
-            onTap: (){
-                      Navigator.push(context,  MaterialPageRoute(builder: (context) => AddOnlineBookForm()));
                     },
           ),
           //----------------------------
@@ -108,7 +97,76 @@ class MainDrawer extends StatelessWidget {
               size: 24,
             ),
             title: Text('Contact Us' , style: TextStyle(fontWeight: FontWeight.bold,fontSize: 24,color: Colors.amber) ,),
-            onTap: ()=> null,
+            onTap: (){
+          showGeneralDialog(
+              barrierColor: Colors.black.withOpacity(0.5),
+              transitionBuilder: (context, a1, a2, widget) {
+                return Transform.scale(
+                  scale: a1.value,
+                  child: Opacity(
+                    opacity: a1.value,
+                    child: AlertDialog(
+                      shape: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16.0)),
+                      content: Container(
+                       height: 160,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              height: 50,
+                              width: 50,
+                              child: Image(
+                                image: AssetImage('img/contactus.png'))),
+                            SizedBox(height: 20,),    
+                            Row(
+                              children: <Widget>[
+                                Icon(
+                                    Icons.mail,
+                                    size: 20,
+                                   ),
+                              SizedBox(width: 8,),     
+                                Text(
+                                  'exbooksManage@gmail.com ',
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.red),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 20),
+                            Row(
+                              children: <Widget>[
+                                Icon(
+                                   Icons.call,
+                                    size: 20,
+                               ),
+                               SizedBox(width:10),
+                                Text(
+                                  "01112184663"
+                                  ,
+                                  style: TextStyle(fontSize: 18,                                      fontWeight: FontWeight.bold,
+                                      color: Colors.red),
+                                ),
+                              ],
+                            ),
+                            
+                          ],
+                        ),
+                      ),
+                  ),
+                )
+                );
+              },
+              transitionDuration: Duration(milliseconds: 200),
+              barrierDismissible: true,
+              barrierLabel: '',
+              context: context,
+              pageBuilder: (context, animation1, animation2) {
+                return null;
+              });
+            },
           ),
           //----------------------------
           

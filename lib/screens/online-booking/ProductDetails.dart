@@ -44,10 +44,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           child: Text('Ex Books', style: TextStyle(fontSize: 25)),
         ),
         actions: <Widget>[
-          new IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {},
-          ),
+
         ],
       ),
       body: ListView(
