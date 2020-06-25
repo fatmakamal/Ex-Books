@@ -1,9 +1,7 @@
 
-import 'package:ex_books/models/Book.dart';
 import 'package:ex_books/models/Online_books.dart';
 import 'package:ex_books/screens/online-booking/EachProduct.dart';
 import 'package:ex_books/services/database.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

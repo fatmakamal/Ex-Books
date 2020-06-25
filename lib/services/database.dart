@@ -204,12 +204,12 @@ class DatabaseServices {
     }).toList();
   }
 
-  // get Online books stream
+  // get cart items stream
   Stream<List<Cart>> get cart {
     return cartCOllection.snapshots().map(cartItemListFromSnapshot);
   }
 
-//online book list from snapshot
+//online cart items list list from snapshot
 
   List<Cart> cartItemListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.documents.map((doc) {

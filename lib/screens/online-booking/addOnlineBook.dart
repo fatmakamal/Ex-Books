@@ -20,7 +20,7 @@ class _AddOnlineBookFormState extends State<AddOnlineBookForm> {
   final DatabaseServices _database = DatabaseServices();
   final Authservices _auth = Authservices();
   final _key = GlobalKey<FormState>();
-  List<Categoreey> categories = [];
+  List<String> categories = ['Action','Romance','Horror','science'];
   String bookName = '';
   String authorName = '';
   File bookImage;
@@ -41,14 +41,14 @@ class _AddOnlineBookFormState extends State<AddOnlineBookForm> {
   TextEditingController _quantityController = TextEditingController();
 //----------------------------------------------------
 
-
+/*
 _AddOnlineBookFormState(){
   _getCategory();
 }
 
   _getCategory() async {
     categories = await _database.getCategories();
-  }
+  }*/
 
 
 
@@ -147,18 +147,31 @@ _AddOnlineBookFormState(){
                       return null;
                     },
                     hint: Text(catSelected),
-                    items: categories.map((cat) {
-                      return DropdownMenuItem(
-                        // key: cat.id,
-                        value: cat.id,
-                        child: Text(cat.title),
-                      );
-                    }).toList(),
+                    
+          items: [
+            DropdownMenuItem<String>(
+              child: Text('Action'),
+              value: 'Action',
+            ),
+            DropdownMenuItem<String>(
+              child: Text('Romance'),
+              value: 'Romance',
+            ),
+            DropdownMenuItem<String>(
+              child: Text('Horror'),
+              value: 'Horror',
+            ),
+            
+            DropdownMenuItem<String>(
+              child: Text('Science'),
+              value: 'Science',
+            ),
+          ],
                     onChanged: (val) {
                       print(val);
                       setState(() {
                         selectedCategory = val;
-                        catSelected = categories.firstWhere((cat) => cat.id == selectedCategory).title;
+                        //catSelected = categories.firstWhere((cat) => cat.id == selectedCategory).title;
                       });
                     }),
                 SizedBox(
