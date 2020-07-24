@@ -26,14 +26,9 @@ class Home extends StatelessWidget {
                 child: Container(
                     padding: const EdgeInsets.all(80.0), child: Text('EX Books',style: TextStyle(fontSize:25),)),
               ),
-             
-
               ],
-
           ),
-
           elevation: 0.0,
-        
         ) ,
 
         drawer: MainDrawer(),

@@ -1,27 +1,56 @@
 import 'package:ex_books/models/Book.dart';
-import 'package:ex_books/shared/dummy-data.dart';
+import 'package:ex_books/screens/category-books-screen/profile-of-book-owner.dart';
 import 'package:ex_books/shared/main-drawer.dart';
 import 'package:flutter/material.dart';
 
-
 class BookDetailsScreen extends StatelessWidget {
-
   final Book book;
   final String userFullName;
-  final String userImg ;
+  final String userImg;
+  final String userphone;
+  final String userId;
 
-    BookDetailsScreen({this.book,this.userFullName,this.userImg});
+  BookDetailsScreen(
+      {this.book,
+      this.userFullName,
+      this.userImg,
+      this.userphone,
+      this.userId});
+
+  selectProfile(ctx, String userFullName, String userImg, String userId) {
+    Navigator.push(
+        ctx,
+        MaterialPageRoute(
+            builder: (ctx) => ProfileOfBookOwnerScreen(
+                  userFullName: userFullName,
+                  userImg: userImg,
+                  userId: userId,
+                )));
+  }
 
   @override
   Widget build(BuildContext context) {
-
-    
-
-
-
-    // final selectedBook = DUMMY_BOOKS.firstWhere((book) {
-    //   return book.id == bookId;
-    // });
+    callAlertDialog(
+      BuildContext context,
+    ) {
+      return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Number"),
+            content: Text(userphone),
+            actions: <Widget>[
+              MaterialButton(
+                  elevation: 5.0,
+                  child: Text("ok"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  })
+            ],
+          );
+        },
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -46,13 +75,16 @@ class BookDetailsScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(50),
                           color: Colors.black,
                         ),
-                        child:
-                         CircleAvatar(
+                        child: InkWell(
+                          child: CircleAvatar(
                             backgroundImage: AssetImage(
                               // 'img/selena.jpg'
-                              '$userImg' ,
-                              ),
-                              ),
+                              '$userImg',
+                            ),
+                          ),
+                          onTap: () => selectProfile(
+                              context, userFullName, userImg, userId),
+                        ),
 //                        Image.network(
 //                          selectedBook.userImageUrl,
 //                          fit: BoxFit.cover,
@@ -93,8 +125,10 @@ class BookDetailsScreen extends StatelessWidget {
                             padding: const EdgeInsets.all(10),
                             child: Text(
                               'Author Name :',
-                              style:
-                                  TextStyle(color: Theme.of(context).accentColor, fontSize: 20,fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  color: Theme.of(context).accentColor,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold),
                             ),
                           ),
                           Text(
@@ -121,7 +155,8 @@ class BookDetailsScreen extends StatelessWidget {
             //----------describtion container ----------
             Card(
               elevation: 4,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)),
               color: Colors.white,
               child: Container(
 //                decoration: BoxDecoration(
@@ -144,29 +179,39 @@ class BookDetailsScreen extends StatelessWidget {
             ),
             //-----------------------------------
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 50),
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 50),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   //-------------chat raised button----------
                   RaisedButton.icon(
-                    color: Theme.of(context).accentColor,
+                      color: Theme.of(context).accentColor,
                       onPressed: () => null,
-                      icon: Icon(Icons.chat,color: Colors.white,),
-                      label: Text('Chat',style: TextStyle(color: Colors.white,fontSize: 20),)
-                  ),
+                      icon: Icon(
+                        Icons.chat,
+                        color: Colors.white,
+                      ),
+                      label: Text(
+                        'Chat',
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      )),
                   //------------------------
                   //--------call raised button------------
 
                   RaisedButton.icon(
                       color: Theme.of(context).accentColor,
-                      onPressed: () => null,
-                      icon: Icon(Icons.call,color: Colors.white,),
-                      label: Text('Call',style: TextStyle(color: Colors.white,fontSize: 20),)
-                  ),
+                      onPressed: () {
+                        callAlertDialog(context);
+                      },
+                      icon: Icon(
+                        Icons.call,
+                        color: Colors.white,
+                      ),
+                      label: Text(
+                        'Call',
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      )),
                   //------------------------
-
-
                 ],
               ),
             ),

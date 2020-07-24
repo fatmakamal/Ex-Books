@@ -8,39 +8,21 @@ class BookItem extends StatelessWidget {
 
   final Book book;
   final List<User> users;
+
   BookItem({this.book,this.users});
 
   // var username;
 
-  void selectBook(ctx, String userFullName , String defaultImg)
+  void selectBook(ctx, String userFullName , String defaultImg , String userPhone , String userId)
   {
     Navigator.push(ctx, MaterialPageRoute(builder: (ctx)
-    => BookDetailsScreen(book: book, userFullName: userFullName, userImg : defaultImg)));
+    => BookDetailsScreen(book: book,
+                         userFullName: userFullName,
+                         userImg : defaultImg ,
+                         userphone: userPhone,
+                         userId : userId )));
         // var username = DatabaseServices().getUserData(book.uid);
-
-    
   }
-
-// final docRef =  Firestore.instance.collection('users').document().get()
-//         .then((val){
-//           return val.data['firstname'];
-//           // print('this isssssssssssssssss ${val.data['firstname']}');
-//         });
-
-// @override
-// void initState()
-// {
-//   super.initState();
-//   DatabaseServices().getUserData(widget.book.uid)
-//   .then((QuerySnapshot docs){
-//     if(docs.documents.isNotEmpty)
-//     {
-//       userData = docs.documents[0].data;
-//       print("tttttttttttttttttttttttttttttttttt  $userData");
-//     }
-
-//   });
-// }
 
   @override
   Widget build(BuildContext context) {
@@ -49,18 +31,24 @@ class BookItem extends StatelessWidget {
     final userLastName = users.firstWhere((user) => user.uid == book.uid).lastname;
     final userFullName = "$userFirstName $userLastName" ; 
     final userImage = users.firstWhere((user) => user.uid == book.uid).image;
+    final userPhone = users.firstWhere((user) => user.uid == book.uid).phonenumber; 
+    final userId = users.firstWhere((user) => user.uid == book.uid).uid;
 
     String path = '/data/user/0/com.example.ex_books/cache/';
+      String total = "";
+
     String totalImagePath = path + userImage;
       String defultImage = "img/defult.jpg";
 
       String getImage(){
-    return totalImagePath == "" ? defultImage : totalImagePath;
+    return total == "" ? defultImage : total;
   }
+
+  
 
 
     return InkWell(
-      onTap: () => selectBook(context,userFullName,defultImage),
+      onTap: () => selectBook(context,userFullName,defultImage,userPhone,userId),
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         elevation: 4,
@@ -133,7 +121,8 @@ class BookItem extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                     color: Colors.black54,
                     child: Text(
-                      book.bookName,
+                      book.bookName
+                      ,
                       style: TextStyle(fontSize: 26, color: Colors.white),
                       softWrap: true,
                       overflow: TextOverflow.fade,

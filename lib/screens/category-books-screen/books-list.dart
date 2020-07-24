@@ -43,22 +43,17 @@ class _BooksListState extends State<BooksList> {
       return book.selectedCategory == widget.theIdOfSelectedCategory;
     }).toList();
 
-    
-
-    // categories.forEach((Categoreey){
-    //   // print("this is Id ${Categoreey.id} , this is title ${Categoreey.title}");
-    // });
+  
 
     fillData();
 return ListView.builder(
   
           itemCount: categoryBooks.length,
- itemBuilder: (context,index){
-        return BookItem(book: categoryBooks[index], users : userss );
+          itemBuilder: (context,index){
+   
+        return BookItem(book: categoryBooks[index], users: userss,);
     }
  );
 
-
-
-  }
+ }
 }
