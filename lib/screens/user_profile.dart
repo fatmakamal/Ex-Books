@@ -5,6 +5,7 @@ import 'package:ex_books/models/userDetails.dart';
 import 'package:ex_books/screens/AddBookForm.dart';
 import 'package:ex_books/services/Auth.dart';
 import 'package:ex_books/services/database.dart';
+import 'package:ex_books/services/upload_iamge.dart';
 import 'package:ex_books/shared/Rate.dart';
 import 'package:ex_books/shared/book_list.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,19 +19,23 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   final DatabaseServices _database = DatabaseServices();
+  UploadImage _imageService = new UploadImage();
   bool loading = false;
   UserDetails currentUser = new UserDetails();
-  String storagePath = '/data/user/0/com.example.ex_books/cache/';
-  String total = "";
   String fullName = "";
   String defultImage = "img/defult.jpg";
+  String imageProfile = '';
 
   _ProfileState() {
     _populateCurrentUser();
   }
 
-  String getImage(){
-    return total == "" ? defultImage : total;
+  downloadImage() async {
+    if (currentUser.image == null) return;
+    var res = await _imageService.getDownloadURI(currentUser.image);
+    setState(() {
+      imageProfile = res;
+    });
   }
 
   void _populateCurrentUser() async {
@@ -38,9 +43,9 @@ class _ProfileState extends State<Profile> {
     var _currentUser = await _database.getUser(user.uid);
     setState(() {
       currentUser = _currentUser;
-      total = storagePath + currentUser.image;
       fullName = currentUser.firstName + ' ' + currentUser.lastName;
     });
+    await downloadImage();
   }
 
   @override
@@ -63,7 +68,6 @@ class _ProfileState extends State<Profile> {
                   style: TextStyle(fontSize: 25),
                 ),
               ),
-
             ],
           ),
           elevation: 0.0,
@@ -77,9 +81,11 @@ class _ProfileState extends State<Profile> {
               CircleAvatar(
                 radius: 70,
                 // maxRadius: 20.0,
-                backgroundImage: AssetImage(
-                  getImage() ,
-                ),
+                backgroundImage: imageProfile == ''
+                    ? AssetImage(defultImage)
+                    : NetworkImage(
+                        imageProfile,
+                      ),
               ),
               SizedBox(height: 16.0),
               Row(
@@ -112,7 +118,7 @@ class _ProfileState extends State<Profile> {
               height: 20,
             ),
             Flexible(
-              child: BookList(),
+              child: BookList(null),
             ),
             Container(
               padding: EdgeInsets.fromLTRB(10, 0, 0, 55),

@@ -11,23 +11,36 @@ import 'package:provider/provider.dart';
 import 'each_book_card.dart';
 
 class BookList extends StatefulWidget {
+  User _user;
+
+  BookList(this._user);
+
   @override
   _BookListState createState() => _BookListState();
 }
 
 class _BookListState extends State<BookList> {
-  
   DatabaseServices service = new DatabaseServices();
   List<Book> userBooks = new List<Book>();
   List<Categoreey> categories = new List<Categoreey>();
 
-  // @override
-  // void initState() {
-  //   fillBookData();
-  // }
-  // _BookListState(){
-  //   fillBookData();
-  // }
+  @override
+  void initState() {
+    if (widget._user == null) {
+      fillBookData();
+    } else {
+      fillBooks();
+    }
+  }
+
+  fillBooks() async {
+    List<Book> user = await service.getBooks(widget._user.uid);
+    List<Categoreey> cat = await service.getCategories();
+    setState(() {
+      userBooks = user;
+      categories = cat;
+    });
+  }
 
   fillBookData() async {
     FirebaseUser cUser = await FirebaseAuth.instance.currentUser();
@@ -41,7 +54,6 @@ class _BookListState extends State<BookList> {
 
   @override
   Widget build(BuildContext context) {
-
 //------------move the current user books from books list to user_books list-------------
 
     //  for (int i = 0; i < books.length; i++) {
@@ -51,13 +63,12 @@ class _BookListState extends State<BookList> {
     //           }
 
 //-------------send user_books list to the builder to show them in the user profile----------
-      fillBookData();
+    // fillBookData();
 
     return ListView.builder(
       scrollDirection: Axis.horizontal,
-      itemBuilder: (context, index) => EachBook(
-        book: userBooks[index],categories: categories
-      ),
+      itemBuilder: (context, index) =>
+          EachBook(book: userBooks[index], categories: categories),
       itemCount: userBooks.length,
     );
   }

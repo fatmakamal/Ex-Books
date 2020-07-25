@@ -1,31 +1,50 @@
 import 'package:ex_books/models/Book.dart';
+import 'package:ex_books/models/user.dart';
 import 'package:ex_books/screens/category-books-screen/profile-of-book-owner.dart';
+import 'package:ex_books/services/upload_iamge.dart';
 import 'package:ex_books/shared/main-drawer.dart';
 import 'package:flutter/material.dart';
 
-class BookDetailsScreen extends StatelessWidget {
+class BookDetailsScreen extends StatefulWidget {
   final Book book;
-  final String userFullName;
-  final String userImg;
-  final String userphone;
-  final String userId;
+  final User user;
 
-  BookDetailsScreen(
-      {this.book,
-      this.userFullName,
-      this.userImg,
-      this.userphone,
-      this.userId});
+  BookDetailsScreen({
+    this.book,
+    this.user,
+  });
+  @override
+  _BookDetailsScreenState createState() => _BookDetailsScreenState();
+}
 
-  selectProfile(ctx, String userFullName, String userImg, String userId) {
-    Navigator.push(
-        ctx,
-        MaterialPageRoute(
-            builder: (ctx) => ProfileOfBookOwnerScreen(
-                  userFullName: userFullName,
-                  userImg: userImg,
-                  userId: userId,
-                )));
+class _BookDetailsScreenState extends State<BookDetailsScreen> {
+  String userImage = "";
+  String bookImage = "";
+  String defultImage = "img/defult.jpg";
+  UploadImage _imageService = new UploadImage();
+
+  @override
+  initState(){
+    super.initState();
+    getBookImage();
+    getUserImage();
+  }
+
+
+  getBookImage() async {
+    _imageService.getDownloadURI(widget.book.bookImage).then((val) => {
+          setState(() {
+            bookImage = val;
+          })
+        });
+  }
+
+  getUserImage() async {
+    _imageService.getDownloadURI(widget.user.image).then((res) => {
+          setState(() {
+            userImage = res;
+          })
+        });
   }
 
   @override
@@ -38,7 +57,7 @@ class BookDetailsScreen extends StatelessWidget {
         builder: (context) {
           return AlertDialog(
             title: Text("Number"),
-            content: Text(userphone),
+            content: Text(widget.user.phonenumber),
             actions: <Widget>[
               MaterialButton(
                   elevation: 5.0,
@@ -54,7 +73,7 @@ class BookDetailsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(book.bookName),
+        title: Text(widget.book.bookName),
         backgroundColor: Color.fromRGBO(240, 140, 44, 10),
       ),
       drawer: MainDrawer(),
@@ -77,23 +96,22 @@ class BookDetailsScreen extends StatelessWidget {
                         ),
                         child: InkWell(
                           child: CircleAvatar(
-                            backgroundImage: AssetImage(
-                              // 'img/selena.jpg'
-                              '$userImg',
-                            ),
+                            backgroundImage: userImage == ''
+                                ? AssetImage(
+                                    defultImage,
+                                  )
+                                : NetworkImage(userImage),
                           ),
-                          onTap: () => selectProfile(
-                              context, userFullName, userImg, userId),
+                          onTap: () =>  {
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfileOfBookOwnerScreen(user: widget.user,)))
+                          }
+                          
                         ),
-//                        Image.network(
-//                          selectedBook.userImageUrl,
-//                          fit: BoxFit.cover,
-//                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(10),
                         child: Text(
-                          userFullName,
+                          widget.user.firstname + " " + widget.user.lastname,
                           style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -108,10 +126,12 @@ class BookDetailsScreen extends StatelessWidget {
                   width: double.infinity,
                   color: Colors.amber,
                   child: Container(
-                    child: Image.network(
-                      'https://hpmedia.bloomsbury.com/rep/s/9781408855959_309031.jpeg',
-                      fit: BoxFit.cover,
-                    ),
+                    child: bookImage == ""
+                        ? Image.network(
+                            'https://hpmedia.bloomsbury.com/rep/s/9781408855959_309031.jpeg',
+                            fit: BoxFit.cover,
+                          )
+                        : Image.network(bookImage, fit: BoxFit.cover),
                   ),
                 ),
                 Padding(
@@ -132,7 +152,7 @@ class BookDetailsScreen extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            '${book.authorName}',
+                            widget.book.authorName,
                             style: TextStyle(fontSize: 18),
                           ),
                         ],
@@ -159,18 +179,13 @@ class BookDetailsScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(15)),
               color: Colors.white,
               child: Container(
-//                decoration: BoxDecoration(
-//
-//                    color: Colors.black12,
-//                    border: Border.all(color: Colors.black),
-//                    borderRadius: BorderRadius.circular(15)),
                 height: 130,
                 width: 330,
                 margin: EdgeInsets.all(10),
                 padding: EdgeInsets.all(10),
                 child: SingleChildScrollView(
                     child: Text(
-                  book.describtion,
+                  widget.book.describtion,
                   style: TextStyle(
                     fontSize: 18,
                   ),
