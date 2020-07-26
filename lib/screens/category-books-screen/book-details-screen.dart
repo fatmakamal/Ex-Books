@@ -1,6 +1,7 @@
 import 'package:ex_books/models/Book.dart';
 import 'package:ex_books/models/user.dart';
 import 'package:ex_books/screens/category-books-screen/profile-of-book-owner.dart';
+import 'package:ex_books/screens/chat-screens/screens/chat-screen.dart';
 import 'package:ex_books/services/upload_iamge.dart';
 import 'package:ex_books/shared/main-drawer.dart';
 import 'package:flutter/material.dart';
@@ -24,12 +25,11 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
   UploadImage _imageService = new UploadImage();
 
   @override
-  initState(){
+  initState() {
     super.initState();
     getBookImage();
     getUserImage();
   }
-
 
   getBookImage() async {
     _imageService.getDownloadURI(widget.book.bookImage).then((val) => {
@@ -95,18 +95,22 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                           color: Colors.black,
                         ),
                         child: InkWell(
-                          child: CircleAvatar(
-                            backgroundImage: userImage == ''
-                                ? AssetImage(
-                                    defultImage,
-                                  )
-                                : NetworkImage(userImage),
-                          ),
-                          onTap: () =>  {
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfileOfBookOwnerScreen(user: widget.user,)))
-                          }
-                          
-                        ),
+                            child: CircleAvatar(
+                              backgroundImage: userImage == ''
+                                  ? AssetImage(
+                                      defultImage,
+                                    )
+                                  : NetworkImage(userImage),
+                            ),
+                            onTap: () => {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ProfileOfBookOwnerScreen(
+                                                user: widget.user,
+                                              )))
+                                }),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(10),
@@ -201,7 +205,12 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                   //-------------chat raised button----------
                   RaisedButton.icon(
                       color: Theme.of(context).accentColor,
-                      onPressed: () => null,
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ChatScreen()));
+                      },
                       icon: Icon(
                         Icons.chat,
                         color: Colors.white,
