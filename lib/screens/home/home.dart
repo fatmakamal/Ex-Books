@@ -7,41 +7,42 @@ import '../../shared/main-drawer.dart';
 import '../user_profile.dart';
 import 'categories-list.dart';
 
-
-
 class Home extends StatelessWidget {
-
   @override
-  final Authservices _auth =Authservices();
+  final Authservices _auth = Authservices();
   Widget build(BuildContext context) {
     return StreamProvider<List<Categoreey>>.value(
       value: DatabaseServices().categories,
-          child: Scaffold(
-            appBar:AppBar(
-          backgroundColor:  Color.fromRGBO(240, 140, 44, 10),
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Color.fromRGBO(240, 140, 44, 10),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
               Center(
                 child: Container(
-                    padding: const EdgeInsets.all(80.0), child: Text('EX Books',style: TextStyle(fontSize:25),)),
+                    padding: const EdgeInsets.all(80.0),
+                    child: Text(
+                      'EX Books',
+                      style: TextStyle(fontSize: 25),
+                    )),
               ),
-              ],
+            ],
           ),
           elevation: 0.0,
-        ) ,
-
+        ),
         drawer: MainDrawer(),
-
-
-      body:CategoriesList(),
+        body: Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+              image: AssetImage('img/books3.jpg'),
+              fit: BoxFit.cover,
+            )),
+            child: CategoriesList()),
       ),
     );
   }
 }
-
-
-
 
 // import 'package:ex_books/services/Auth.dart';
 // import 'package:ex_books/shared/category-item.dart';
@@ -55,7 +56,7 @@ class Home extends StatelessWidget {
 //   @override
 
 //   final Authservices _auth =Authservices();
-  
+
 //   Widget build(BuildContext context) {
 //     return Scaffold(
 //       appBar:AppBar(
@@ -65,7 +66,7 @@ class Home extends StatelessWidget {
 //               children: [
 //               Container(
 //                   padding: const EdgeInsets.all(8.0), child: Text('EX Books',style: TextStyle(fontSize:25),)),
-             
+
 //               Container(
 //                 margin: EdgeInsets.only(left: 90),
 //                  padding: EdgeInsets.all(5),
@@ -90,12 +91,8 @@ class Home extends StatelessWidget {
 //           ),
 
 //           elevation: 0.0,
-        
+
 //         ) ,
-        
-
-
-
 
 //       drawer: MainDrawer(),
 //       body: GridView(
@@ -115,7 +112,3 @@ class Home extends StatelessWidget {
 //     );
 //   }
 // }
-
-
-
-

@@ -1,4 +1,3 @@
-
 import 'package:ex_books/screens/category-books-screen/category-books-screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,16 +9,17 @@ class CategoryTile extends StatelessWidget {
   final Categoreey category;
   CategoryTile({this.category});
 
-  void selectCategory(BuildContext context)
-  {
+  void selectCategory(BuildContext context) {
     // Navigator.push(context, MaterialPageRoute(builder: (context)=> SplashScreen(category: category,)));
-    Navigator.push(context, MaterialPageRoute(builder: (context)
-     =>
-      CategoryBooksScreen(theIdOfSelectedCategory: category.id, theTitleOfSelectedCategory: category.title,)));
-    
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => CategoryBooksScreen(
+                  theIdOfSelectedCategory: category.id,
+                  theTitleOfSelectedCategory: category.title,
+                )));
   }
 
-  
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -32,14 +32,15 @@ class CategoryTile extends StatelessWidget {
           child: Text(
             category.title,
             style: TextStyle(
-                color: Colors.white70,
+                color: Colors.white,
                 fontWeight: FontWeight.bold,
-                fontSize: 20,
+                fontSize: 27,
                 fontFamily: 'RobotoCondensed'),
           ),
         ),
         decoration: BoxDecoration(
-          color: Color.fromRGBO(240, 140, 44, 10),
+          color: Colors.white24,
+          // color: Color.fromRGBO(240, 140, 44, 10),
         ),
       ),
     );
@@ -47,7 +48,6 @@ class CategoryTile extends StatelessWidget {
 }
 
 //------------------------------old category item ----------------------------
-
 
 // import 'package:ex_books/screens/category-books-screen.dart';
 // import 'package:flutter/material.dart';
@@ -91,4 +91,3 @@ class CategoryTile extends StatelessWidget {
 //     );
 //   }
 // }
-
