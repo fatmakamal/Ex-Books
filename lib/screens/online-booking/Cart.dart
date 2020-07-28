@@ -4,6 +4,7 @@ import 'package:ex_books/services/Auth.dart';
 import 'package:ex_books/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:ex_books/screens/online-booking/CartProducts.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 import 'EachCartItem.dart';
@@ -11,11 +12,11 @@ import 'EachCartItem.dart';
 class CartScreen extends StatefulWidget {
   @override
   _CartScreenState createState() => _CartScreenState();
-  static void deleteItem (BuildContext context, String id){
-    _CartScreenState state = context.findAncestorStateOfType<_CartScreenState>();
+  static void deleteItem(BuildContext context, String id) {
+    _CartScreenState state =
+        context.findAncestorStateOfType<_CartScreenState>();
     state.deleteitem(id);
   }
-
 }
 
 class _CartScreenState extends State<CartScreen> {
@@ -24,12 +25,11 @@ class _CartScreenState extends State<CartScreen> {
   Authservices userService = new Authservices();
   int totalPrice = 0;
 
- Future deleteitem(String docId) async {
+  Future deleteitem(String docId) async {
     DatabaseServices service = new DatabaseServices();
     await service.deleteitem(docId);
     await getBooks();
   }
-
 
   List<String> getBookIds() {
     List<String> ids = carts.map((c) => c.documentId).toList();
@@ -48,7 +48,7 @@ class _CartScreenState extends State<CartScreen> {
 
   getBooks() async {
     var userId = await userService.getCurrentUser();
-     dbService.getByUserId(userId.uid).then((val) => {
+    dbService.getByUserId(userId.uid).then((val) => {
           setState(() {
             carts = val;
           }),
@@ -71,9 +71,13 @@ class _CartScreenState extends State<CartScreen> {
         backgroundColor: Color.fromRGBO(240, 140, 44, 10),
         title: Text('Cart'),
       ),
-      body: Cart_product(
-        books: carts,
-      ),
+      body: carts.length == 0
+          ? SpinKitChasingDots(
+              color: Color.fromRGBO(240, 140, 44, 10),
+            )
+          : Cart_product(
+              books: carts,
+            ),
       bottomNavigationBar: new Container(
         color: Colors.white,
         child: Row(
@@ -94,8 +98,13 @@ class _CartScreenState extends State<CartScreen> {
             Expanded(
               child: MaterialButton(
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Checkout(bookIds: getBookIds(), totalPrice: this.totalPrice,)));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Checkout(
+                                bookIds: getBookIds(),
+                                totalPrice: this.totalPrice,
+                              )));
                 },
                 child: new Text('Check Out ',
                     style: TextStyle(

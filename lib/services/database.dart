@@ -167,6 +167,14 @@ class DatabaseServices {
     return onlineBookCOllection.snapshots().map(onlinebookListFromSnapshot);
   }
 
+  Future<List<OnlineBook>> getOnlineBook() async {
+    var result = await onlineBookCOllection.getDocuments();
+    List<OnlineBook> books = result.documents
+        .map((e) => OnlineBook.fromSnapshot(e.data, e.documentID))
+        .toList();
+    return books;
+  }
+
 //online book list from snapshot
 
   List<OnlineBook> onlinebookListFromSnapshot(QuerySnapshot snapshot) {

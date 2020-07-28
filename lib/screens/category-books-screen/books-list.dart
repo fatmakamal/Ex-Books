@@ -80,18 +80,22 @@ class _BooksListState extends State<BooksList> {
                   width: 400.0,
                   child: SimpleAutoCompleteTextField(
                       decoration: new InputDecoration(
-                        hintText: "Search Space Part",
+                        hintText: "Search Books",
                         suffixIcon: new Icon(Icons.search),
                         hintStyle: TextStyle(color: Colors.grey),
                       ),
                       textChanged: (value) {
                         searchChanged(value, categoryBooks);
                       },
+                      textSubmitted: (val) {
+                        searchChanged(val, categoryBooks);
+                      },
                       key: key,
                       suggestions: suggestion)),
               Expanded(
                 child: ListView.builder(
-                    itemCount: listFiltered ? list.length : categoryBooks.length ?? 0,
+                    itemCount:
+                        listFiltered ? list.length : categoryBooks.length ?? 0,
                     itemBuilder: (context, index) {
                       return listFiltered
                           ? BookItem(

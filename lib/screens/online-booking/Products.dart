@@ -3,6 +3,7 @@ import 'package:ex_books/models/Online_books.dart';
 import 'package:ex_books/screens/online-booking/EachProduct.dart';
 import 'package:ex_books/services/database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 class Products extends StatefulWidget {
@@ -12,7 +13,12 @@ class Products extends StatefulWidget {
 
 class _State extends State<Products> {
   DatabaseServices service = new DatabaseServices();
-  List<OnlineBook> userBooks = new List<OnlineBook>();
+  // List<OnlineBook> userBooks = new List<OnlineBook>();
+  GlobalKey<AutoCompleteTextFieldState<String>> key = new GlobalKey();
+  bool isListFiltered = false;
+  List<OnlineBook> filteredList = new List<OnlineBook>();
+  List<OnlineBook> bookList = new List<OnlineBook>();
+  List<String> suggestion = new List<String>();
   /* fillBookData() async {
     FirebaseUser cUser = await FirebaseAuth.instance.currentUser();
     List<Book> user = await service.getBooks(cUser.uid);
@@ -25,64 +31,78 @@ class _State extends State<Products> {
   @override
   initState() {
     super.initState();
+    getData();
   }
 
-  GlobalKey<AutoCompleteTextFieldState<String>> key = new GlobalKey();
-  bool listFiltered = false;
-  List<OnlineBook> list = new List<OnlineBook>();
-  searchChanged(String value, List<OnlineBook> categoryBooks) {
+  getData() async {
+    service.getOnlineBook().then((value) => {
+          this.setState(() {
+            bookList = value;
+            suggestion = bookList.map((e) {
+              return e.bookName;
+            }).toList();
+          })
+        });
+  }
+
+  searchChanged(String value) {
     if (value != "") {
       setState(() {
-        list = categoryBooks
+        filteredList = bookList
             .where((element) =>
                 element.bookName.toLowerCase().contains(value.toLowerCase()))
             .toList();
-        listFiltered = true;
+        isListFiltered = true;
       });
     } else {
       setState(() {
-        listFiltered = false;
+        isListFiltered = false;
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final userBooks = Provider.of<List<OnlineBook>>(context);
-
-    final List<String> suggestion = userBooks != null
-        ? userBooks.map((e) {
-            return e.bookName;
-          }).toList()
-        : new List<String>();
+    // final userBooks = Provider.of<List<OnlineBook>>(context);
 
     return Column(
       children: [
         Container(
-            padding: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 10.0),
+            padding: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 50.0),
             width: 400.0,
             child: SimpleAutoCompleteTextField(
-                decoration: new InputDecoration(
-                  hintText: "Search Space Part",
-                  suffixIcon: new Icon(Icons.search),
-                  hintStyle: TextStyle(color: Colors.grey),
-                ),
-                textChanged: (value) {
-                  searchChanged(value, userBooks);
-                },
-                key: key,
-                suggestions: suggestion)),
-        Expanded(
-          child: GridView.builder(
-              itemCount: listFiltered
-                  ? list.length
-                  : userBooks == null ? 0 : userBooks.length,
-              gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2),
-              itemBuilder: (BuildContext context, int index) => EachProductCard(
-                    book: listFiltered ? list[index] : userBooks[index],
-                  )),
-        ),
+              decoration: new InputDecoration(
+                hintText: "Search Books",
+                suffixIcon: new Icon(Icons.search),
+                hintStyle: TextStyle(color: Colors.grey),
+              ),
+              key: key,
+              suggestions: suggestion,
+              textChanged: (value) {
+                searchChanged(value);
+              },
+              textSubmitted: (value) {
+                searchChanged(value);
+              },
+            )),
+        bookList.length != 0
+            ? Expanded(
+                child: GridView.builder(
+                    itemCount: isListFiltered
+                        ? filteredList.length
+                        : bookList == null ? 0 : bookList.length,
+                    gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2),
+                    itemBuilder: (BuildContext context, int index) =>
+                        EachProductCard(
+                          book: isListFiltered
+                              ? filteredList[index]
+                              : bookList[index],
+                        )),
+              )
+            : SpinKitChasingDots(
+                color: Color.fromRGBO(240, 140, 44, 10),
+              ),
       ],
     );
   }

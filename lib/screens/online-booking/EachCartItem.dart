@@ -1,24 +1,48 @@
 import 'package:ex_books/models/Cart.dart';
 import 'package:ex_books/screens/online-booking/Cart.dart';
 import 'package:ex_books/services/database.dart';
+import 'package:ex_books/services/upload_iamge.dart';
 import 'package:flutter/material.dart';
 
-class Single_cart_product extends StatelessWidget {
+class Single_cart_product extends StatefulWidget {
+  @override
+  _Single_cart_productState createState() => _Single_cart_productState();
   final Cart cartItem;
   final int totalPrice;
   Single_cart_product({this.cartItem, this.totalPrice});
+}
 
- 
+class _Single_cart_productState extends State<Single_cart_product> {
+  UploadImage _imageService = new UploadImage();
+  String defultImage = "img/defult.jpg";
+  String imageURI = "";
+
+  @override
+  initState() {
+    super.initState();
+    getImage();
+  }
+
+  getImage() {
+    _imageService.getDownloadURI(widget.cartItem.bookImage).then((val) => {
+          setState(() {
+            imageURI = val;
+          })
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
-    String path = '/data/user/0/com.example.ex_books/cache/';
-    String total = path + cartItem.bookImage;
+    // String path = '/data/user/0/com.example.ex_books/cache/';
+    // String total = path + widget.cartItem.bookImage;
 
     return Card(
       child: Container(
           height: 100.0,
           child: ListTile(
-            leading: Image.asset(total, width: 80.0, height: 80.0),
+            leading: imageURI == ""
+                ? Image.asset(this.defultImage, width: 80.0, height: 80.0)
+                : Image.network(this.imageURI, width: 80.0, height: 80.0),
             title: Row(
               children: <Widget>[
                 Text('Book Name : ',
@@ -26,7 +50,7 @@ class Single_cart_product extends StatelessWidget {
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Color.fromRGBO(240, 140, 44, 10))),
-                Text(cartItem.bookName),
+                Text(widget.cartItem.bookName),
               ],
             ),
             subtitle: Column(
@@ -46,7 +70,7 @@ class Single_cart_product extends StatelessWidget {
 
                     Container(
                       child: Text(
-                        "${cartItem.quantity}",
+                        "${widget.cartItem.quantity}",
                         style: TextStyle(
                             fontSize: 17.0,
                             fontWeight: FontWeight.bold,
@@ -58,7 +82,8 @@ class Single_cart_product extends StatelessWidget {
                     ),
                     FlatButton.icon(
                         onPressed: () {
-                          CartScreen.deleteItem(context, cartItem.documentId);
+                          CartScreen.deleteItem(
+                              context, widget.cartItem.documentId);
                         },
                         icon: Icon(
                           Icons.delete,
@@ -79,7 +104,7 @@ class Single_cart_product extends StatelessWidget {
                     Container(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        "\$${cartItem.price}",
+                        "\$${widget.cartItem.price}",
                         style: TextStyle(
                             fontSize: 17.0,
                             fontWeight: FontWeight.bold,
