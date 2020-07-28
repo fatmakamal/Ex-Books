@@ -9,11 +9,14 @@ class EachBook extends StatefulWidget {
   Book book;
   final String bookId;
   final List<Categoreey> categories;
+  final bool isProfile;
+  final Function bookDeleted;
+
 
   @override
   _EachBookState createState() => _EachBookState();
 
-  EachBook({this.book, this.categories, this.bookId});
+  EachBook({this.book, this.categories, this.bookId, this.isProfile,this.bookDeleted});
 }
 
 class _EachBookState extends State<EachBook> {
@@ -22,6 +25,7 @@ class _EachBookState extends State<EachBook> {
   Book _book = new Book();
   List<Categoreey> _categories = new List<Categoreey>();
   UploadImage _imageService = new UploadImage();
+  bool _isProfile;
 
   getImage() async {
     if (_book.bookName == null) return;
@@ -33,11 +37,12 @@ class _EachBookState extends State<EachBook> {
   }
 
   @override
-  // // ignore: must_call_super
   void initState() {
     super.initState();
+
     setState(() {
       _book = widget.book;
+      _isProfile = widget.isProfile;
       _categories = widget.categories;
     });
     getImage();
@@ -45,8 +50,12 @@ class _EachBookState extends State<EachBook> {
 
   Future deletebook(String docId) async {
     DatabaseServices service = new DatabaseServices();
-    await service.deleteBook(docId);
-    return;
+    var result  = await service.deleteBook(docId);
+    return result;
+  }
+
+  bookDeleted(){
+    widget.bookDeleted();
   }
 
   @override
@@ -121,23 +130,26 @@ class _EachBookState extends State<EachBook> {
                                   style: TextStyle(fontSize: 16),
                                 )),
                             SizedBox(height: 20),
-                            Expanded(
-                              child: Align(
-                                alignment: Alignment.bottomCenter,
-                                child: FlatButton.icon(
-                                  icon: Icon(
-                                    Icons.delete,
-                                    color: Color.fromRGBO(23, 19, 17, 1),
-                                  ),
-                                  label: Text('Delete Book'),
-                                  textColor: Colors.black,
-                                  onPressed: () async {
-                                    await deletebook(_book.documentId);
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              ),
-                            ),
+                            _isProfile
+                                ? Expanded(
+                                    child: Align(
+                                      alignment: Alignment.bottomCenter,
+                                      child: FlatButton.icon(
+                                        icon: Icon(
+                                          Icons.delete,
+                                          color: Color.fromRGBO(23, 19, 17, 1),
+                                        ),
+                                        label: Text('Delete Book'),
+                                        textColor: Colors.black,
+                                        onPressed: () async {
+                                          await deletebook(_book.documentId);
+                                          Navigator.pop(context);
+                                          bookDeleted();
+                                        },
+                                      ),
+                                    ),
+                                  )
+                                : SizedBox(height: 20),
                           ],
                         ),
                       ),

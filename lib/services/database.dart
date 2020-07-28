@@ -21,8 +21,6 @@ class DatabaseServices {
   DatabaseServices({this.uid});
 
   //---------------------
- 
-
 
   //----------------collection refrence------------------------------------
   final CollectionReference categoriesCollection =
@@ -34,9 +32,9 @@ class DatabaseServices {
   final CollectionReference onlineBookCOllection =
       Firestore.instance.collection('Online_books');
   final CollectionReference cartCOllection =
-      Firestore.instance.collection('cart');    
+      Firestore.instance.collection('cart');
   final CollectionReference orderCOllection =
-      Firestore.instance.collection('order');   
+      Firestore.instance.collection('order');
 
 //-------------------------------------------------------------------------------
 //---------------------Add new User----------------------------------------
@@ -51,7 +49,6 @@ class DatabaseServices {
       'uid': uid,
     });
   }
-
 
 //--------------------------Add new Book-------------------------------------------
   Future updateBookData(
@@ -77,74 +74,58 @@ class DatabaseServices {
 
 //--------------------------Add new Online bookBook-------------------------------------------
   Future updateOnlineBookData(
-      
-      String bookname,
-      String authorname,
-      var image,
-      String category,
-      String description,
-      int price,
-      int quantity,
-      
-      ) async {
+    String bookname,
+    String authorname,
+    var image,
+    String category,
+    String description,
+    int price,
+    int quantity,
+  ) async {
     return await onlineBookCOllection.document().setData({
-      
       'bookname': bookname,
       'authorname': authorname,
       'image': image,
       'category': category,
       'decription': description,
-      'price' : price,
-      'quantity' : quantity,
-
+      'price': price,
+      'quantity': quantity,
     });
-  }  
-
-
+  }
 
 //--------------------------Add new Online bookBook-------------------------------------------
   Future addToCart(
-      
-      String bookname,
-      var image,
-      var price,
-      int quantity,
-      String uid,
-      
-      ) async {
+    String bookname,
+    var image,
+    var price,
+    int quantity,
+    String uid,
+  ) async {
     return await cartCOllection.document().setData({
-      
-      'bookname': bookname,  
+      'bookname': bookname,
       'image': image,
-      'price' : price,
-      'quantity' : quantity,
-      'uid' : uid,
-
+      'price': price,
+      'quantity': quantity,
+      'uid': uid,
     });
-  }  
-
+  }
 
   //--------------------------Add new order -------------------------------------------
   Future addNewOrder(
-      
-      String address,
-      String phone,
-      int totalPay,
-      String uid,
-
-      
-      ) async {
+    String address,
+    String phone,
+    int totalPay,
+    String uid,
+  ) async {
     return await orderCOllection.document().setData({
-      
-      'address': address,  
+      'address': address,
       'phone': phone,
-      'totalPay' : totalPay,
-      'uid' : uid,
-
+      'totalPay': totalPay,
+      'uid': uid,
     });
-  }  
+  }
 
-//---------------------------------------------------------------  
+//---------------------------------------------------------------
 
 //---------------------------------------------------------------
 //------------save image on fire storage------------------
@@ -153,12 +134,11 @@ class DatabaseServices {
     String fileName = basename(_image.path);
     StorageReference firebaseStorageRef =
         FirebaseStorage.instance.ref().child(fileName);
-       
+
     StorageUploadTask uploadTask = firebaseStorageRef.putFile(_image);
     StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
     print("image uploaded on path $_image");
   }
-
 
 //---------------------------------------------------------------------------
 
@@ -181,8 +161,7 @@ class DatabaseServices {
       );
     }).toList();
   }
-  
-  
+
   // get Online books stream
   Stream<List<OnlineBook>> get onlineBooks {
     return onlineBookCOllection.snapshots().map(onlinebookListFromSnapshot);
@@ -226,16 +205,16 @@ class DatabaseServices {
 
   Future<List<Cart>> getByUserId(userId) async {
     var result = await cartDB.where("uid", isEqualTo: userId).getDocuments();
-    List<Cart> carts = result.documents.map((b) => Cart.fromSnapshot(b.data, b.documentID)).toList();
+    List<Cart> carts = result.documents
+        .map((b) => Cart.fromSnapshot(b.data, b.documentID))
+        .toList();
     return carts;
-
   }
-
 
 //---------------------------------------------------------------------------------
 
 //----------Delete book function---------------
-  
+
   Future deleteBook(docId) async {
     // bookCOllection.document(docId).delete();
     await _bookRepo.removeDocument(docId);
@@ -243,16 +222,15 @@ class DatabaseServices {
   }
 
   //----------Delete item from cart function---------------
-  
+
   Future deleteitem(docId) async {
     // bookCOllection.document(docId).delete();
     await _cartRepo.removeDocument(docId);
     return;
   }
 
-
 //--------------get specific user's books------------
- 
+
   Future<List<Book>> getBooks(uId) async {
     List<Book> books;
     var result = _bookRepo.getDataCollection();
@@ -272,8 +250,6 @@ class DatabaseServices {
     }
     return books;
   }
-
-
 
   //------------------------------------------------------------------
 
@@ -300,12 +276,9 @@ class DatabaseServices {
 
   Future<List<User>> getUsers() async {
     return _userRepo.getDataCollection().then((doc) {
-      return doc.documents
-          .map((b) => User.fromSnapshot(b.data))
-          .toList();
+      return doc.documents.map((b) => User.fromSnapshot(b.data)).toList();
     });
   }
-
 
 //----------------------------------------------------------------------------
 
@@ -323,7 +296,6 @@ class DatabaseServices {
   Stream<List<Categoreey>> get categories {
     return categoriesCollection.snapshots().map(_categoryListFromSnapshot);
   }
-
 
 //------------------------------------------------------------------
   // getUserData(String userId)

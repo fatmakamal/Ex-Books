@@ -52,6 +52,10 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     final Authservices _auth = Authservices();
 
+    bookAdded() {
+      (context as Element).reassemble();
+    }
+
     return StreamProvider<List<Book>>.value(
       value: DatabaseServices().books,
       child: Scaffold(
@@ -144,7 +148,9 @@ class _ProfileState extends State<Profile> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => AddBookForm()));
+                                    builder: (context) => AddBookForm(
+                                          bookAdded: bookAdded,
+                                        )));
                           }),
                     ),
                   ),

@@ -1,3 +1,4 @@
+import 'package:ex_books/services/upload_iamge.dart';
 import 'package:path/path.dart';
 import 'package:ex_books/services/Auth.dart';
 import 'package:ex_books/shared/increase_button.dart';
@@ -28,6 +29,25 @@ class _ProductDetailsState extends State<ProductDetails> {
   bool loading = false;
   final Authservices _auth = Authservices();
   int selctedQuantity = QuantityButton().current;
+  UploadImage _imageService = new UploadImage();
+  String imageURI = "";
+  String defultImage = "img/defult.jpg";
+
+  getImage() async {
+    _imageService
+        .getDownloadURI(widget.product_detail_picture)
+        .then((value) => {
+              this.setState(() {
+                imageURI = value;
+              })
+            });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getImage();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +63,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           },
           child: Text('Ex Books', style: TextStyle(fontSize: 25)),
         ),
-        actions: <Widget>[
-
-        ],
+        actions: <Widget>[],
       ),
       body: ListView(
         children: <Widget>[
@@ -54,7 +72,9 @@ class _ProductDetailsState extends State<ProductDetails> {
             child: GridTile(
               child: Container(
                 color: Colors.white,
-                child: Image.asset(widget.product_detail_picture),
+                child: imageURI == ""
+                    ? Image.asset(defultImage)
+                    : Image.network(imageURI),
               ),
               footer: Container(
                 padding: const EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),

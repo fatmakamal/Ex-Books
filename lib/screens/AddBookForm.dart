@@ -12,9 +12,11 @@ import 'package:path/path.dart';
 
 class AddBookForm extends StatefulWidget {
   FileImage get bookImage => null;
-
+  final Function bookAdded;
   @override
   _AddBookFormState createState() => _AddBookFormState();
+
+  AddBookForm({this.bookAdded});
 }
 
 class _AddBookFormState extends State<AddBookForm> {
@@ -56,6 +58,10 @@ class _AddBookFormState extends State<AddBookForm> {
     setState(() {
       currentUser = _currentUser;
     });
+  }
+
+  bookAdded() {
+    widget.bookAdded();
   }
 
   @override
@@ -174,7 +180,9 @@ class _AddBookFormState extends State<AddBookForm> {
                       print(val);
                       setState(() {
                         selectedCategory = val;
-                        catSelected = categories.firstWhere((cat) => cat.id == selectedCategory).title;
+                        catSelected = categories
+                            .firstWhere((cat) => cat.id == selectedCategory)
+                            .title;
                       });
                     }),
                 SizedBox(
@@ -301,9 +309,9 @@ class _AddBookFormState extends State<AddBookForm> {
                                         style: TextStyle(
                                             color: Colors.white, fontSize: 20),
                                       ),
-                                      onPressed: () async {
+                                      onPressed: () {
                                         print("the path is $bookImage");
-                                        await _database.uploadPic(bookImage);
+                                        _database.uploadPic(bookImage);
                                         Navigator.pop(context, true);
                                       },
                                       color: Color.fromRGBO(23, 19, 17, 10),
@@ -341,7 +349,7 @@ class _AddBookFormState extends State<AddBookForm> {
                           describtion,
                           currentUser.email,
                           currentUser.image);
-                     
+
                       if (result == null) {
                         setState(() {
                           error = 'could not submit';
@@ -389,6 +397,7 @@ class _AddBookFormState extends State<AddBookForm> {
                                     bookImage = null;
                                   });
                                   Navigator.pop(context, true);
+                                  bookAdded();
                                 },
                                 color: Color.fromRGBO(23, 19, 17, 10),
                                 width: 120,

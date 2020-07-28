@@ -52,23 +52,25 @@ class _BookListState extends State<BookList> {
     });
   }
 
+  bookDeleted() {
+    if (widget._user == null) {
+      fillBookData();
+    } else {
+      fillBooks();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-//------------move the current user books from books list to user_books list-------------
-
-    //  for (int i = 0; i < books.length; i++) {
-    //     if(books[i].uid==id){
-    //      user_books.add(books[i]);
-    //                        }
-    //           }
-
-//-------------send user_books list to the builder to show them in the user profile----------
-    // fillBookData();
 
     return ListView.builder(
       scrollDirection: Axis.horizontal,
-      itemBuilder: (context, index) =>
-          EachBook(book: userBooks[index], categories: categories),
+      itemBuilder: (context, index) => EachBook(
+        book: userBooks[index],
+        categories: categories,
+        isProfile: widget._user == null ? true : false,
+        bookDeleted: bookDeleted,
+      ),
       itemCount: userBooks.length,
     );
   }
