@@ -32,10 +32,11 @@ class _ProfileState extends State<Profile> {
 
   downloadImage() async {
     if (currentUser.image == null) return;
-    var res = await _imageService.getDownloadURI(currentUser.image);
-    setState(() {
-      imageProfile = res;
-    });
+    _imageService.getDownloadURI(currentUser.image).then((value) => {
+          setState(() {
+            imageProfile = value;
+          })
+        });
   }
 
   void _populateCurrentUser() async {
@@ -53,7 +54,7 @@ class _ProfileState extends State<Profile> {
     final Authservices _auth = Authservices();
 
     bookAdded() {
-      (context as Element).reassemble();
+      // (context as Element).reassemble();
     }
 
     return StreamProvider<List<Book>>.value(
@@ -145,7 +146,7 @@ class _ProfileState extends State<Profile> {
                                 color: Colors.white,
                               )),
                           onTap: () {
-                            Navigator.push(
+                            Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => AddBookForm(

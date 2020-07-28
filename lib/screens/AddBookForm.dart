@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:ex_books/models/category.dart';
 import 'package:ex_books/models/userDetails.dart';
+import 'package:ex_books/screens/user_profile.dart';
 import 'package:ex_books/services/Auth.dart';
 import 'package:ex_books/services/database.dart';
 import 'package:ex_books/services/upload_iamge.dart';
@@ -69,6 +70,10 @@ class _AddBookFormState extends State<AddBookForm> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Profile())) ,
+        ),
         backgroundColor: Color.fromRGBO(240, 140, 44, 10),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,

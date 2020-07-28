@@ -26,6 +26,7 @@ class _BookListState extends State<BookList> {
 
   @override
   void initState() {
+    super.initState();
     if (widget._user == null) {
       fillBookData();
     } else {
@@ -62,7 +63,6 @@ class _BookListState extends State<BookList> {
 
   @override
   Widget build(BuildContext context) {
-
     return ListView.builder(
       scrollDirection: Axis.horizontal,
       itemBuilder: (context, index) => EachBook(
